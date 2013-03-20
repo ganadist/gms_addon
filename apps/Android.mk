@@ -26,7 +26,6 @@ GMS_APPS := \
 	DeskClockGoogle.apk:DeskClock \
 	EmailGoogle.apk:Email \
 	Exchange2Google.apk:Exchange2 \
-	GalleryGoogle.apk:Gallery \
 	GenieWidget.apk:WidgetPreview \
 	Gmail2.apk \
 	GoogleContactsSyncAdapter.apk \
@@ -70,7 +69,16 @@ GMS_APPS := \
 
 $(foreach f,$(GMS_APPS),$(call add-gms-app,$(f)))
 
-	
+include $(CLEAR_VARS)
+LOCAL_SRC_FILES := GalleryGoogle.apk
+LOCAL_MODULE := GalleryGoogle
+LOCAL_MODULE_SUFFIX := .apk
+LOCAL_OVERRIDES_PACKAGES := LegacyCamera Gallery
+LOCAL_CERTIFICATE := PRESIGNED
+LOCAL_MODULE_CLASS := APPS
+LOCAL_MODULE_TAGS := optional
+include $(BUILD_PREBUILT)
+
 include $(CLEAR_VARS)
 LOCAL_MODULE := GoogleBackupTransport
 LOCAL_SRC_FILES := GoogleBackupTransport.apk
