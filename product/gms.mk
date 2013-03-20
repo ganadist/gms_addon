@@ -52,9 +52,18 @@ PRODUCT_PACKAGES += \
 	NetworkLocation \
 
 PRODUCT_PACKAGES += \
+	libvideoeditor_jni \
+	libvideoeditor_core \
+	libvideoeditor_osal \
+	libvideoeditor_videofilters \
+	libvideoeditorplayer \
+	libjni_eglfence \
+	libjni_filtershow_filters \
+	libjni_mosaic \
 	MusicFX
 
 PRODUCT_PACKAGES += \
+	libsrec_jni \
 	com.android.nfc_extras
 
 $(call inherit-product-if-exists, vendor/google/product/gms-lib.mk)
