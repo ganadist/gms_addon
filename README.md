@@ -61,9 +61,10 @@ If you want to add GMS in your custom android rom, follow this.
         <?xml version="1.0" encoding="UTF-8"?>
         <manifest>
           <remote  name="github"
-        		fetch="https://github.com" />
-        	<project path="vendor/google"
-        		name="ganadist/gms_addon" revision="android-4.2.2-r1" />
+              fetch="https://github.com" />
+          <project path="vendor/google"
+              name="ganadist/gms_addon"
+              remote="github" revision="android-4.2.2_r1" />
         </manifest>
 
 
