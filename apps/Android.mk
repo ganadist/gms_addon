@@ -18,9 +18,9 @@ endef
 
 GMS_APPS := \
 	Books.apk \
-	BrowserProviderProxy.apk \
+	BrowserProviderProxy.apk:Browser \
 	CalendarGoogle.apk:Calendar \
-	Chrome.apk:Browser \
+	Chrome.apk \
 	ConfigUpdater.apk \
 	Currents.apk \
 	DeskClockGoogle.apk:DeskClock \
@@ -50,7 +50,7 @@ GMS_APPS := \
 	Phonesky.apk \
 	PlusOne.apk \
 	PrebuiltGmsCore.apk \
-	SetupWizard.apk \
+	SetupWizard.apk:Provision \
 	Street.apk \
 	TagGoogle.apk \
 	Talk.apk \
