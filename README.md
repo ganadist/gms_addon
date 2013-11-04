@@ -3,7 +3,7 @@ gms_addon
 Intro
 -----
 
-android gms addon for Jellybean 4.2.2
+android gms addon for Kitkat 4.4
 
 If you want to add GMS in your custom android rom, follow this.
 
@@ -17,7 +17,7 @@ If you want to add GMS in your custom android rom, follow this.
 
         $ source bulid/envsetup.sh
         $ lunch $YOUR_TARGET_DEVICE
-        $ make -j4 aapt zipalign simg2img
+        $ make -j4 aapt zipalign simg2img_host
         $ which aapt
         out/host/linux-x86/bin/aapt
         $ which zipalign
@@ -43,9 +43,9 @@ If you want to add GMS in your custom android rom, follow this.
 
  It is sparsed filesystem, so if you want to mount as ext4 filesystem, you must convert.
 
-        $ tar xf occam-jdq39-factory-345dc199.tgz
-        $ cd occam-jdq39
-        $ unzip -x image-occam-jdq39.zip
+        $ tar xf hammerhead-krt16m-factory-bd9c39de.tgz
+        $ cd hammerhead-krt16m
+        $ unzip -x image-hammerhead-krt16m.zip
         $ simg2img system.img system.ext4
 
 
@@ -64,7 +64,7 @@ If you want to add GMS in your custom android rom, follow this.
               fetch="https://github.com" />
           <project path="vendor/google"
               name="ganadist/gms_addon"
-              remote="github" revision="android-4.2.2_r1" />
+              remote="github" revision="android-4.4_r1" />
         </manifest>
 
 
