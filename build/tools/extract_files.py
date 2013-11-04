@@ -12,6 +12,7 @@ AAPT = 'aapt'
 ZIPALIGN = 'zipalign'
 
 APP_DIR = 'app'
+PRIV_APP_DIR = 'priv-app'
 LIB_DIR = 'lib'
 FRAMEWORK_DIR = 'framework'
 PERMISSION_DIR = os.path.join('etc', 'permissions')
@@ -20,7 +21,9 @@ MEDIA_DIR = 'media'
 GMS_INCLUDE = (
     'com.android.chrome',
     'com.android.browser.provider', #BrowserProviderProxy.apk
-    'com.qo.android.sp.oem', #OccamQuickOffice.apk
+    'com.quickoffice.android',
+    'com.hp.android.printservice',
+    'com.android.phasebeamorange',
     'com.android.vending', #Phonesky.apk aka Play Store
     'jp.co.omronsoft.iwnnime.ml',
     'jp.co.omronsoft.iwnnime.ml.kbd.white',
@@ -121,7 +124,7 @@ class DexData(BaseData):
         for filename in self.files:
             outfile = os.path.join(self.dst, os.path.basename(filename))
             odexfile = os.path.splitext(filename)[0] + '.odex'
-            if not os.access(odexfile, os.R_OK):
+            if 1 or not os.access(odexfile, os.R_OK):
                 shutil.copy(filename, outfile)
             else:
                 undexopt(odexfile, filename, outfile)
@@ -160,11 +163,26 @@ if __name__ == '__main__':
     def filter_lib(src):
         # XXX
         files = (
+            'libAppDataSearch.so',
+            'libEnjemailuri.so',
+            'lib_dic_en_USUK.conf.so',
+            'lib_dic_en_tablet_USUK.conf.so',
+            'lib_dic_ja_JP.conf.so',
+            'lib_dic_morphem_ja_JP.conf.so',
             'libchromeview.so',
+            'libdocscanner_image-v7a.so',
+            'libdocsimageutils.so',
+            'libearthandroid.so',
             'libearthmobile.so',
-            'libfrsdk.so', # facial recognization sdk
-            'libgoggles_clientvision.so',
-            'libgoogle_recognizer_jni.so',
+            'libennjcon.so',
+            'libennjubase1.so',
+            'libennjubase1gb.so',
+            'libennjubase1us.so',
+            'libennjubase2.so',
+            'libennjubase3.so',
+            'libennjyomi.so',
+            'libgames_rtmp_jni.so',
+            'libgoogle_recognizer_jni_l.so',
             'libgtalk_jni.so',
             'libgtalk_stabilize.so',
             'libiwnn.so',
@@ -172,16 +190,21 @@ if __name__ == '__main__':
             'libjni_googlepinyinime_latinime_5.so',
             'libjni_koreanime.so',
             'libjni_latinimegoogle.so',
-            'libkaomoji_kihon.so',
-            'libkaomoji_tyukyu.so',
+            'libjni_t13n_shared_engine.so',
             'libpatts_engine_jni_api.so',
+            'libplus_jni_v8.so',
             'libspeexwrapper.so',
+            'libwebp_android.so',
+            'libwebrtc_audio_coding.so',
+            'libwprintplugin_pcl.so',
+            'libwprintplugin_pdf.so',
         )
         return map(lambda x: os.path.join(src, x), files)
 
- 
+
     d = (
         (DexData, APP_DIR, 'apps', filter_apk),
+        (DexData, PRIV_APP_DIR, 'priv-apps', filter_apk),
         (DexData, FRAMEWORK_DIR, FRAMEWORK_DIR, filter_jar),
         (CopyData, MEDIA_DIR, os.path.join('data', MEDIA_DIR), filter_bootamin),
         (CopyData, PERMISSION_DIR, os.path.join('data', 'permissions'), filter_permission),
