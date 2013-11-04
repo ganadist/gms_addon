@@ -21,72 +21,45 @@ GMS_APPS := \
 	BrowserProviderProxy.apk:Browser \
 	CalendarGoogle.apk:Calendar \
 	Chrome.apk \
-	ConfigUpdater.apk \
-	Currents.apk \
+	CloudPrint2.apk \
 	DeskClockGoogle.apk:DeskClock \
+	Drive.apk \
 	EmailGoogle.apk:Email \
 	Exchange2Google.apk:Exchange2 \
+	GalleryGoogle.apk:Gallery2 \
 	GenieWidget.apk:WidgetPreview \
 	Gmail2.apk \
+	GoogleCamera.apk:Camera2 \
 	GoogleContactsSyncAdapter.apk \
 	GoogleEars.apk \
 	GoogleEarth.apk \
-	GoogleFeedback.apk \
-	GoogleLoginService.apk \
-	GooglePartnerSetup.apk \
+	GoogleHindiIME.apk \
+	GoogleHome.apk:Launcher2 \
 	GooglePinyinIME.apk:PinyinIME \
-	GoogleServicesFramework.apk \
 	GoogleTTS.apk:PicoTts \
+	HPPrintPlugin.apk \
+	Hangouts.apk:Mms \
+	Keep.apk \
 	KoreanIME.apk \
-	LatinImeDictionaryPack.apk \
 	LatinImeGoogle.apk:LatinIME \
 	Magazines.apk \
 	Maps.apk \
 	MediaUploader.apk \
 	Music2.apk:Music \
-	NetworkLocation.apk \
-	OccamQuickOffice.apk \
-	OneTimeInitializer.apk \
-	Phonesky.apk \
+	PlayGames.apk \
 	PlusOne.apk \
-	PrebuiltGmsCore.apk \
-	SetupWizard.apk:Provision \
+	QuickOffice.apk \
 	Street.apk \
-	TagGoogle.apk \
-	Talk.apk \
-	Velvet.apk:QuickSearchBox \
-	VideoEditorGoogle.apk:VideoEditor \
+	SunBeam.apk \
 	Videos.apk \
-	VoiceSearchStub.apk \
-	Wallet.apk \
 	YouTube.apk \
 	iWnnIME.apk:OpenWnn \
 	iWnnIME_Kbd_White.apk \
-	talkback.apk \
 
 #GMS_APPS += \
 	NfcNci.apk \
 
 $(foreach f,$(GMS_APPS),$(call add-gms-app,$(f)))
-
-include $(CLEAR_VARS)
-LOCAL_SRC_FILES := GalleryGoogle.apk
-LOCAL_MODULE := GalleryGoogle
-LOCAL_MODULE_SUFFIX := .apk
-LOCAL_OVERRIDES_PACKAGES := LegacyCamera Gallery
-LOCAL_CERTIFICATE := PRESIGNED
-LOCAL_MODULE_CLASS := APPS
-LOCAL_MODULE_TAGS := optional
-include $(BUILD_PREBUILT)
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := GoogleBackupTransport
-LOCAL_SRC_FILES := GoogleBackupTransport.apk
-LOCAL_MODULE_SUFFIX := .apk
-LOCAL_MODULE_CLASS := APPS
-LOCAL_MODULE_TAGS := optional
-LOCAL_CERTIFICATE := platform
-include $(BUILD_PREBUILT)
 
 #include $(CLEAR_VARS)
 #LOCAL_MODULE := NetworkLocation

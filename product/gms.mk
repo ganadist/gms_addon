@@ -3,53 +3,58 @@ PRODUCT_PACKAGES := \
 	BrowserProviderProxy \
 	CalendarGoogle \
 	Chrome \
-	ConfigUpdater \
-	Currents \
+	CloudPrint2 \
 	DeskClockGoogle \
+	Drive \
 	EmailGoogle \
 	Exchange2Google \
 	GalleryGoogle \
 	GenieWidget \
 	Gmail2 \
+	GoogleCamera \
 	GoogleContactsSyncAdapter \
 	GoogleEars \
 	GoogleEarth \
-	GoogleFeedback \
-	GoogleLoginService \
-	GooglePartnerSetup \
+	GoogleHindiIME \
+	GoogleHome \
 	GooglePinyinIME \
-	GoogleServicesFramework \
 	GoogleTTS \
+	HPPrintPlugin \
+	Hangouts \
+	Keep \
 	KoreanIME \
-	LatinImeDictionaryPack \
 	LatinImeGoogle \
 	Magazines \
 	Maps \
 	MediaUploader \
 	Music2 \
-	OccamQuickOffice \
-	OneTimeInitializer \
-	PartnerBookmarksProvider \
-	Phonesky \
+	PlayGames \
 	PlusOne \
-	PrebuiltGmsCore \
-	SetupWizard \
+	QuickOffice \
 	Street \
-	TagGoogle \
-	Talk \
-	Velvet \
-	VideoEditorGoogle \
+	SunBeam \
 	Videos \
-	VoiceSearchStub \
-	Wallet \
 	YouTube \
 	iWnnIME \
 	iWnnIME_Kbd_White \
 	talkback \
 
 PRODUCT_PACKAGES += \
+	ConfigUpdater \
 	GoogleBackupTransport \
-	NetworkLocation \
+	GoogleDialer \
+	GoogleFeedback \
+	GoogleLoginService \
+	GoogleOneTimeInitializer \
+	GooglePartnerSetup \
+	GoogleServicesFramework \
+	Phonesky \
+	PrebuiltGmsCore \
+	SetupWizard \
+	TagGoogle \
+	Velvet \
+	Wallet \
+	talkback \
 
 PRODUCT_PACKAGES += \
 	libvideoeditor_jni \
@@ -73,9 +78,8 @@ $(call inherit-product-if-exists, vendor/google/product/data.mk)
 PRODUCT_PROPERTY_OVERRIDES := \
 	ro.com.google.clientidbase=android-google \
 	ro.com.android.wifi-watchlist=GoogleGuest \
-	ro.error.receiver.system.apps=com.google.android.feedback \
+	ro.error.receiver.system.apps=com.google.android.gms \
 	ro.setupwizard.enterprize_mode=1 \
-	ro.setupwizard.mode=REQUIRED \
 	ro.opengles.version=131072 \
 
 PRODUCT_PACKAGE_OVERLAYS := vendor/google/overlay
