@@ -26,10 +26,8 @@ GMS_APPS := \
 	Drive.apk \
 	EmailGoogle.apk:Email \
 	Exchange2Google.apk:Exchange2 \
-	GalleryGoogle.apk:Gallery2 \
 	GenieWidget.apk:WidgetPreview \
 	Gmail2.apk \
-	GoogleCamera.apk:Camera2 \
 	GoogleContactsSyncAdapter.apk \
 	GoogleEars.apk \
 	GoogleEarth.apk \
@@ -60,6 +58,27 @@ GMS_APPS := \
 	NfcNci.apk \
 
 $(foreach f,$(GMS_APPS),$(call add-gms-app,$(f)))
+
+include $(CLEAR_VARS)
+LOCAL_SRC_FILES := GalleryGoogle.apk
+LOCAL_MODULE := GalleryGoogle
+LOCAL_MODULE_SUFFIX := .apk
+LOCAL_OVERRIDES_PACKAGES := Gallery Gallery2
+LOCAL_CERTIFICATE := PRESIGNED
+LOCAL_MODULE_CLASS := APPS
+LOCAL_MODULE_TAGS := optional
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+LOCAL_SRC_FILES := GoogleCamera.apk
+LOCAL_MODULE := GoogleCamera
+LOCAL_MODULE_SUFFIX := .apk
+LOCAL_OVERRIDES_PACKAGES := Camera2 LegacyCamera
+LOCAL_CERTIFICATE := PRESIGNED
+LOCAL_MODULE_CLASS := APPS
+LOCAL_MODULE_TAGS := optional
+include $(BUILD_PREBUILT)
+
 
 #include $(CLEAR_VARS)
 #LOCAL_MODULE := NetworkLocation
