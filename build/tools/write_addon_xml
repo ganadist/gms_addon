@@ -1,0 +1,199 @@
+#!/usr/bin/env python
+import sys, os
+import hashlib
+import zipfile
+
+VENDORS = {
+    # vendor desc : vendor id
+    'Google Inc.' : 'google',
+    'LG Electronics' : 'lge',
+    'Intel Corporation': 'intel_corporation',
+}
+
+for k, v in VENDORS.copy().items():
+    VENDORS[v] = k
+
+def escape(str):
+    d = (
+        ('&', '&amp;'),
+        ('>', '&gt;'),
+        ('<', '&lt;'),
+        ('"', '&quot;'),
+        ("'", '&apos;'),
+    )
+    for entity, escaped in d:
+        str = str.replace(entity, escaped)
+    return str
+
+class Element:
+    def __init__(self, tag, text = None, attr = None):
+        self.tag = tag
+        if text is None:
+            self.text = text
+        else:
+            self.text = str(text)
+
+        self.attr = attr or {}
+        self.parent = None
+        self.children = []
+
+    def add(self, tag, text = None, attr = None):
+        child = Element(tag, text, attr)
+        self.add_child(child)
+        return child
+
+    def add_child(self, child):
+        self.children.append(child)
+        child.parent = self
+
+    def write(self, output):
+        for line in self.writeLine():
+            output.write(line + '\n')
+
+    def writeLine(self):
+        attr = ''
+        for k, v in self.attr.items():
+            attr += ' %s="%s"'%(k, v)
+        INDENT = '  '
+        START_TAG = '<sdk:' + self.tag + attr + '>'
+        END_TAG = '</sdk:' + self.tag + '>'
+
+        if self.text:
+            yield START_TAG + escape(self.text) + END_TAG
+            return
+
+        yield START_TAG
+
+        for child in self.children:
+            for line in child.writeLine():
+                yield INDENT + line
+
+        yield END_TAG
+
+def add_libs(manifest):
+    libraries = manifest.get('libraries', '').split(';')
+    if not libraries:
+        return
+    libs = Element('libs')
+    for name in libraries:
+        lib = libs.add('lib')
+        lib.add('name', name)
+        if name in manifest:
+            lib.add('description', manifest.get(name).split(';')[-1])
+    return libs
+
+def add_archives(filenames):
+    if isinstance(filenames, str):
+        filenames = [filenames,]
+    archives = Element('archives')
+    for filename in filenames:
+        archive = archives.add('archive', attr = {'arch': 'any', 'os': 'any'})
+        st = os.stat(filename)
+        sha1 = hashlib.sha1()
+        sha1.update(open(filename, 'r+b').read())
+
+        archive.add('size', st.st_size)
+        archive.add('checksum', sha1.hexdigest(), {'type':'sha1'})
+        archive.add('url', os.path.basename(filename))
+
+    return archives
+
+def write_addon(filename):
+    zip = zipfile.ZipFile(filename)
+    manifest = filter(lambda x: x.lower().endswith('manifest.ini'), zip.namelist())
+    # hack for py2 and py3
+    for m in manifest:
+        manifest = m
+        break
+
+    m = {}
+    for line in zip.open(manifest):
+        line = line.decode('utf-8').strip()
+        if not line: continue
+        if line.startswith('#'): continue
+        if not '=' in line: continue
+        k, v = line.split('=', 1)
+        m[k] = v
+
+    addon = Element('add-on')
+
+    # vendor-id, name-id , uses-license
+    d = {
+        # manifest, addon
+        'name': 'name-display',
+        'vendor': 'vendor-display',
+        'description': 'description',
+        'api': 'api-level',
+        'revision': 'revision',
+    }
+
+    for manifest_id, addon_id in d.items():
+        v = m.get(manifest_id, '')
+        addon.add(addon_id, v)
+
+    vendor_desc = m['vendor']
+    name_desc = m['name']
+
+    vendor_id = VENDORS.get(vendor_desc, 'vendor_unknown')
+    addon.add('vendor-id', vendor_id)
+    name_id = name_desc.replace(' ', '_').lower()
+    addon.add('name-id', name_id)
+
+    # need to fill
+    d = {
+        'desc-url': '',
+        'uses-license': '',
+    }
+
+    libs = add_libs(m)
+    if libs:
+        addon.add_child(libs)
+
+    archives = add_archives(filename)
+    addon.add_child(archives)
+
+    return addon
+
+def write_extra(filename):
+    name = os.path.basename(filename)
+    name = os.path.splitext(name)[0]
+
+    print name
+    extra, vendor, path = name.split('-')
+    vendor = vendor.lower()
+
+    extra = Element('extra')
+    d = {
+        'revision': 1,
+        'vendor-display': VENDORS.get(vendor, 'Unknown vendor'),
+        'vendor-id': vendor,
+        # FIXME
+        'name-display': 'blah blah',
+        'path': path,
+    }
+
+    for k, v in d.items():
+        extra.add(k, v)
+
+    archives = add_archives(filename)
+    extra.add_child(archives)
+
+    return extra
+
+if __name__ == '__main__':
+    filenames = sys.argv[1:]
+    scheme = {
+        'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+        'xmlns:sdk': 'http://schemas.android.com/sdk/android/addon/5',
+    }
+
+    root = Element('sdk-addon', attr = scheme)
+
+    for filename in filenames:
+        if 'addon' in filename:
+            item = write_addon(filename)
+        else:
+            item = write_extra(filename)
+        root.add_child(item)
+
+    root.write(sys.stdout)
