@@ -191,6 +191,7 @@ if __name__ == '__main__':
             'libjni_koreanime.so',
             'libjni_latinimegoogle.so',
             'libjni_t13n_shared_engine.so',
+            'liblightcycle.so',
             'libpatts_engine_jni_api.so',
             'libplus_jni_v8.so',
             'libspeexwrapper.so',
