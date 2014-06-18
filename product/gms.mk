@@ -27,7 +27,6 @@ PRODUCT_PACKAGES := \
 	LatinImeGoogle \
 	Magazines \
 	Maps \
-	MediaUploader \
 	Music2 \
 	PlayGames \
 	PlusOne \

@@ -42,7 +42,6 @@ GMS_APPS := \
 	LatinImeGoogle.apk:LatinIME \
 	Magazines.apk \
 	Maps.apk \
-	MediaUploader.apk \
 	Music2.apk:Music \
 	PlayGames.apk \
 	PlusOne.apk \
