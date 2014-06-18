@@ -1,6 +1,8 @@
 GMS_PERMISSION_DIR := vendor/google/data/permissions
 
 GMS_PERMISSION_FILES := \
+	com.google.android.ble.xml \
+	com.google.android.camera2.xml \
 	com.google.android.maps.xml \
 	com.google.android.media.effects.xml \
 	com.google.widevine.software.drm.xml \

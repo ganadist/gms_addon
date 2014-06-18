@@ -182,6 +182,8 @@ if __name__ == '__main__':
             'libennjubase3.so',
             'libennjyomi.so',
             'libgames_rtmp_jni.so',
+            'libgcam.so',
+            'libgcam_swig_jni.so',
             'libgoogle_recognizer_jni_l.so',
             'libgtalk_jni.so',
             'libgtalk_stabilize.so',
