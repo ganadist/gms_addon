@@ -14,4 +14,4 @@ $(foreach f, $(GMS_PERMISSION_FILES) ,$(call copy-gms-permission,$(f)))
 
 GMS_PERMISSION_FILES :=
 
-PRODUCT_COPY_FILES += vendor/google/data/media/bootanimation.zip:$(TARGET_COPY_OUT_SYSTEM)/media/bootanimation.zip
+PRODUCT_COPY_FILES += vendor/google/data/media/bootanimation.zip:$(TARGET_COPY_OUT_SYSTEM)/media/bootanimation.zip:google
