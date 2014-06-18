@@ -33,8 +33,6 @@ GMS_APPS := \
 	Wallet.apk \
 	talkback.apk \
 
-#GMS_APPS += \
-	NfcNci.apk \
 
 $(foreach f,$(GMS_APPS),$(call add-gms-app,$(f)))
 

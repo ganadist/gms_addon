@@ -54,8 +54,6 @@ GMS_APPS := \
 	iWnnIME.apk:OpenWnn \
 	iWnnIME_Kbd_White.apk \
 
-#GMS_APPS += \
-	NfcNci.apk \
 
 $(foreach f,$(GMS_APPS),$(call add-gms-app,$(f)))
 
