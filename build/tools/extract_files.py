@@ -146,7 +146,7 @@ if __name__ == '__main__':
         jarfiles = glob.glob(os.path.join(src, "*.jar"))
         return filter(lambda x: 'com.google.' in x, jarfiles)
 
-    def filter_bootamin(src):
+    def filter_bootanim(src):
         filename = os.path.join(src, 'bootanimation.zip')
         return [filename]
 
@@ -183,7 +183,7 @@ if __name__ == '__main__':
     d = (
         (DexData, APP_DIR, 'apps', filter_apk),
         (DexData, FRAMEWORK_DIR, FRAMEWORK_DIR, filter_jar),
-        (CopyData, MEDIA_DIR, os.path.join('data', MEDIA_DIR), filter_bootamin),
+        (CopyData, MEDIA_DIR, os.path.join('data', MEDIA_DIR), filter_bootanim),
         (CopyData, PERMISSION_DIR, os.path.join('data', 'permissions'), filter_permission),
         (CopyData, LIB_DIR, LIB_DIR, filter_lib),
     )
