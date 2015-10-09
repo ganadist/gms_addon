@@ -1,7 +1,7 @@
 GMS_FRWDIR := vendor/google/framework
 GMS_JAR := \
-	com.google.android.ble.jar \
 	com.google.android.camera2.jar \
+	com.google.android.dialer.support.jar \
 	com.google.android.maps.jar \
 	com.google.android.media.effects.jar \
 	com.google.widevine.software.drm.jar \
