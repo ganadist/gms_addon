@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+import os
+import subprocess
+
+def down(url):
+    TEMP_FILENAME = "down.test"
+    os.system("wget -O '%s' '%s'"%(TEMP_FILENAME, url))
+    return TEMP_FILENAME
+
+def apk_rename(filename):
+    cmd = 'aapt', 'd', 'badging', filename
+    attrs = {}
+    with subprocess.Popen(cmd, stdout=subprocess.PIPE) as proc:
+        for line in proc.stdout:
+            line = line[:-1]
+            line = line.decode('utf-8')
+            if line.startswith('package: '):
+                line = line.split(None, 1)[1]
+                line = line.strip()
+                while line:
+                    k, line = line.split('=', 1)
+                    _, line = line.split("'", 1)
+                    v, line = line.split("'", 1)
+                    attrs[k] = v
+                    line = line.strip()
+                break
+    newname = attrs['name'] + '.apk'
+    if filename != newname:
+        if os.access(newname, os.F_OK):
+            os.unlink(newname)
+        print('rename %s => %s'%(filename, newname))
+        os.rename(filename, newname)
+
+if __name__ == '__main__':
+    import sys
+    url = sys.argv[1]
+    if url.startswith('http'):
+        url = down(url)
+    apk_rename(url)

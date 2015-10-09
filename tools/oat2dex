@@ -1,0 +1,134 @@
+#!/usr/bin/env python2
+# oat2dex
+# Copyright 2014 Jake Valletta (@jake_valletta)
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+# http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Extract DEX from an ART ELF file
+
+from re import finditer
+from sys import argv, exc_info
+import os
+import struct
+import zipfile
+from zlib import adler32
+
+__NAME__ = "oat2dex"
+__VERSION__ = "1.0"
+
+def usage():
+    print "Usage: %s [oat_file] ..." % __NAME__
+
+def addJar(jarfile, dexbuf):
+    out = zipfile.ZipFile(jarfile, 'a')
+    out.writestr('classes.dex', dexbuf)
+
+def getSize(f, offset):
+
+    f.seek(offset)
+    try:
+        size = struct.unpack('i', f.read(4))[0]
+    except:
+        print "Unexpected error getting size:", exc_info()[0]
+        return -1
+
+    return size
+
+def carveDex(apk_file, oat_file, dex_offset, oat_file_name):
+
+    print "Found DEX signature at offset 0x%x" % dex_offset
+
+    size_offset = dex_offset + 32
+
+    dex_size = getSize(oat_file, size_offset)
+
+    if dex_size < 0:
+        print "Unable to get DEX size."
+        return -1
+
+    print "Got DEX size: 0x%x" % dex_size
+
+    try:
+        oat_file.seek(dex_offset)
+        buf = oat_file.read(dex_size)
+
+        # replace checksum
+        checksum, = struct.unpack('I', buf[8:12])
+        asum = adler32(buf[12:], 1)
+        if asum < 0: asum += 2 ** 32
+        if asum != checksum:
+            checksum = struct.pack('I', asum)
+            buf = buf[:8] + checksum + buf[12:]
+
+        # repack apk
+        addJar(apk_file, buf)
+    except(IOError, OSError) as e:
+        print "[ERROR] Unable to open output file!", e
+        return -2
+
+    return 0
+
+def processOat(apk_file):
+
+    rtn = 0
+
+    def findOat(filename):
+        dirname = os.path.dirname(filename) or '.'
+        filename = os.path.basename(filename)
+        oatname = os.path.splitext(filename)[0] + '.odex'
+        walk = os.walk(dirname)
+        next(walk)
+        for dirname, dirs, files in walk:
+            if oatname in files:
+                return os.path.join(dirname, oatname)
+
+    oat_file_name = findOat(apk_file)
+    if not oat_file_name:
+        print "[ERROR] Unable to find oat for file \'%s\'" % apk_file
+        return -1
+    print "Processing \'%s\'" % oat_file_name
+    try:
+        f = open(oat_file_name, 'r')
+
+        try:
+            s = f.read()
+            hits = [m.start() for m in finditer('dex\n035', s)]
+
+            for dex_addr in hits:
+                rtn |= carveDex(apk_file, f, dex_addr, oat_file_name)
+        finally:
+            f.close()
+
+    except (IOError, OSError) as e:
+        print "[ERROR] Unable to open file \'%s\'" % oat_file_name
+        return -1
+
+    return rtn
+
+def main(args):
+    
+    rtn = 0
+
+    for oat in args:
+        processOat(oat)
+
+    return rtn
+
+if __name__ == "__main__":
+    print "DO NOT USE. BROKEN"
+
+    if len(argv) < 2:
+        print "[Error] You must specify at least 1 APK/JAR file."
+        exit(usage())
+
+    exit(main(argv[1:]))
