@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 import os
 import subprocess
 
@@ -28,7 +28,6 @@ def apk_rename(filename):
     if filename != newname:
         if os.access(newname, os.F_OK):
             os.unlink(newname)
-        print('rename %s => %s'%(filename, newname))
         os.rename(filename, newname)
 
 if __name__ == '__main__':

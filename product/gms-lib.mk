@@ -1,27 +1,20 @@
-GMS_LIBDIR := vendor/google/lib
+DRM_LIBDIR := vendor/google/lib/drm
 
-GMS_LIBS := \
-	libchromeview.so \
-	libearthmobile.so \
-	libfrsdk.so \
-	libgoggles_clientvision.so \
-	libgoogle_recognizer_jni.so \
-	libgtalk_jni.so \
-	libgtalk_stabilize.so \
-	libiwnn.so \
-	libjni_googlepinyinime_5.so \
-	libjni_googlepinyinime_latinime_5.so \
-	libjni_koreanime.so \
-	libjni_latinimegoogle.so \
-	libkaomoji_kihon.so \
-	libkaomoji_tyukyu.so \
-	libpatts_engine_jni_api.so \
-	libspeexwrapper.so \
+DRM_LIBS := \
+	vendor/lib/drm/libdrmwvmplugin.so \
+	vendor/lib/libWVStreamControlAPI_L1.so \
+	vendor/lib/libWVphoneAPI.so \
+	vendor/lib/libdrmdecrypt.so \
+	vendor/lib/libwvdrm_L1.so \
+	vendor/lib/libwvm.so \
+	vendor/lib/mediadrm/libdrmclearkeyplugin.so \
+	vendor/lib/mediadrm/libwvdrmengine.so \
 
-define gms-copy-lib
-$(eval PRODUCT_COPY_FILES += $(GMS_LIBDIR)/$(1):$(TARGET_COPY_OUT_SYSTEM)/lib/$(1):google)
+define drm-copy-lib
+$(eval PRODUCT_COPY_FILES += $(DRM_LIBDIR)/$(1):$(TARGET_COPY_OUT_SYSTEM)/$(1):google)
 endef
 
-$(foreach f, $(GMS_LIBS), $(call gms-copy-lib,$(f)))
+$(foreach f, $(DRM_LIBS), $(call drm-copy-lib,$(f)))
 
-GMS_LIBS :=
+DRM_LIBDIR :=
+DRM_LIBS :=

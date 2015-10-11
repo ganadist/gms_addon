@@ -3,7 +3,29 @@ import os, glob
 import shutil
 import zipfile
 
-dst = '..'
+for E in ('TOP', 'ANDROID_BUILD_TOP'):
+    top = os.getenv(E)
+    if top:
+        break
+else:
+    assert False
+dst = os.path.join(top, 'vendor/google/apps')
+
+install_to_data = (
+    'GoogleEars',
+    'Videos',
+    'Books',
+    'DeviceAssist',
+    'FitnessPrebuilt',
+    'Translate',
+    'GoogleEarth',
+    'PdfViewer',
+    'PlusOne',
+    'PrebuiltNewsWeather',
+    'YouTube',
+    'HangOutDialer',
+)
+
 packages = (
     ('com.android.chrome.apk', 'Chrome', 'Browser'),
     ('com.android.facelock.apk', 'FackLock', ),
@@ -12,15 +34,15 @@ packages = (
 	('com.google.android.apps.cavalry.apk', 'DeviceAssist'),
 	('com.google.android.apps.cloudprint.apk', 'CloudPrint2'),
 	('com.google.android.apps.docs.apk', 'Drive'),
-	('com.google.android.apps.docs.editors.docs.apk', 'EditorsDocsStub'),
-	('com.google.android.apps.docs.editors.sheets.apk', 'EditorsSheetsStub'),
-	('com.google.android.apps.docs.editors.slides.apk', 'EditorsSlidesStub'),
+	('com.google.android.apps.docs.editors.docs.apk', 'EditorsDocs'),
+	('com.google.android.apps.docs.editors.sheets.apk', 'EditorsSheets'),
+	('com.google.android.apps.docs.editors.slides.apk', 'EditorsSlides'),
 	('com.google.android.apps.fitness.apk', 'FitnessPrebuilt'),
 	('com.google.android.apps.genie.geniewidget.apk', 'PrebuiltNewsWeather',),
 	('com.google.android.apps.hangoutsdialer.apk', 'HangOutDialer'),
-	('com.google.android.apps.magazines.apk', 'NewsstandStub'),
+	('com.google.android.apps.magazines.apk', 'Newsstand'),
 	('com.google.android.apps.maps.apk', 'Maps'),
-	('com.google.android.apps.messaging.apk', 'PrebuiltBugleStub', 'messaging'),
+	('com.google.android.apps.messaging.apk', 'PrebuiltBugle', 'messaging'),
 	('com.google.android.apps.pdfviewer.apk', 'PdfViewer'),
 	('com.google.android.apps.photos.apk', 'Photos',
         ('VisualizationWallpapers', 'Gallery2', 'PhotoTable', 'LiveWallpapers',
@@ -38,7 +60,7 @@ packages = (
 	('com.google.android.inputmethod.korean.apk', 'KoreanIME',),
 	('com.google.android.inputmethod.latin.apk', 'LatinImeGoogle',
         ('LatinIME', 'OpenWnn',) ),
-	('com.google.android.keep.apk', 'PrebuiltKeepStub',),
+	('com.google.android.keep.apk', 'PrebuiltKeep',),
 	('com.google.android.launcher.apk', 'GoogleHome', 'Launcher2'),
 	('com.google.android.marvin.talkback.apk', 'talkback'),
 	('com.google.android.music.apk', 'Music2', 'Music',),
@@ -47,13 +69,26 @@ packages = (
     'GoogleContactsSyncAdapter',),
     ('com.google.android.syncadapters.calendar.apk',
     'GoogleCalendarSyncAdapter',  ),
-	('com.google.android.talk.apk', 'HangOuts',),
+	('com.google.android.talk.apk', 'Hangouts',),
 	('com.google.android.tts.apk', 'GoogleTTS', 'PicoTts'),
 	('com.google.android.videos.apk', 'Videos',),
 	('com.google.android.webview.apk', 'WebViewGoogle', 'webview',
         ('libwebviewchromium_loader', 'libwebviewchromium_plat_support'),),
 	('com.google.android.youtube.apk', 'YouTube'),
     ('com.google.earth.apk', 'GoogleEarth'),
+
+	('stubs/com.google.android.apps.docs.editors.docs.apk', 'EditorsDocsStub',
+            'EditorsDocs'),
+	('stubs/com.google.android.apps.docs.editors.sheets.apk',
+            'EditorsSheetsStub', 'EditorsSheets'),
+	('stubs/com.google.android.apps.docs.editors.slides.apk',
+            'EditorsSlidesStub', 'EditorsSlides'),
+	('stubs/com.google.android.apps.magazines.apk', 'NewsstandStub',
+            'Newsstand'),
+	('stubs/com.google.android.apps.messaging.apk', 'PrebuiltBugleStub',
+            'PrebuiltBugle'),
+	('stubs/com.google.android.keep.apk', 'PrebuiltKeepStub', 'PrebuiltKeep'),
+
 )
 
 privileged_packages = (
@@ -116,6 +151,10 @@ def generate_package(info, privileged):
     yield 'LOCAL_MODULE_CLASS := APPS'
     yield 'LOCAL_MODULE_TAGS := optional'
     dstfile = os.path.join(dst, filename)
+
+    if not os.path.exists(os.path.dirname(dstfile)):
+        os.makedirs(os.path.dirname(dstfile))
+
     jnis = []
     if 0 and system('unzip -t %s "lib/*.so"'%(filename)) == 0:
         jni_path = os.path.join(dst, package)
@@ -149,6 +188,10 @@ def generate_package(info, privileged):
     if privileged:
         yield 'LOCAL_PRIVILEGED_MODULE := true'
     yield 'LOCAL_MODULE_OWNER := google'
+
+    if package in install_to_data:
+        yield 'LOCAL_MODULE_PATH := $(TARGET_OUT_DATA_APPS)'
+
 
     yield 'include $(BUILD_PREBUILT)'
     yield ''

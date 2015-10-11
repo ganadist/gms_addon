@@ -1,9 +1,7 @@
-extract_nexus_files() {
-	python $(gettop)/vendor/google/build/tools/extract_files.py "$@"
+generate() {
+	python3 $(gettop)/vendor/google/build/tools/generate.py "$@"
 }
 
-write_addon_xml() {
-	python $(gettop)/vendor/google/build/tools/write_addon_xml "$@"
+apkdown() {
+	python3 $(gettop)/vendor/google/build/tools/apkdown "$@"
 }
-
-add_lunch_combo gms-userdebug

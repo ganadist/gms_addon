@@ -2,27 +2,21 @@ PRODUCT_PACKAGES := \
 	Chrome \
 	PartnerBookmarksProvider \
 	GoogleCamera \
-	Books \
 	CloudPrint2 \
 	Drive \
-	EditorsDocsStub \
-	EditorsSheetsStub \
-	EditorsSlidesStub \
-	PrebuiltNewsWeather \
-	HangOutDialer \
-	NewsstandStub \
-	PrebuiltBugleStub \
+	EditorsDocs \
+	EditorsSheets \
+	EditorsSlides \
+	PrebuiltBugle \
 	Photos \
-	PlusOne \
 	CalculatorGoogle \
 	CalendarGooglePrebuilt \
 	PrebuiltDeskClockGoogle \
-	GoogleEars \
 	PrebuiltGmail \
 	PrebuiltExchange3Google \
 	KoreanIME \
 	LatinImeGoogle \
-	PrebuiltKeepStub \
+	PrebuiltKeep \
 	GoogleHome \
 	talkback \
 	Maps \
@@ -30,17 +24,24 @@ PRODUCT_PACKAGES := \
 	PlayGames \
 	GoogleContactsSyncAdapter \
 	GoogleCalendarSyncAdapter \
-	HangOuts \
+	Hangouts \
 	GoogleTTS \
-	Videos \
 	WebViewGoogle \
-	YouTube \
+	GoogleEars \
 
-#	DeviceAssist \
-#	FitnessPrebuilt \
-#	Translate \
-#	GoogleEarth \
-#	PdfViewer \
+PRODUCT_PACKAGES += \
+	PrebuiltNewsWeather \
+	HangOutDialer \
+	Newsstand \
+	PlusOne \
+	YouTube \
+	Videos \
+	Books \
+	DeviceAssist \
+	FitnessPrebuilt \
+	Translate \
+	GoogleEarth \
+	PdfViewer \
 
 PRODUCT_PACKAGES += \
 	Phonesky \
@@ -70,10 +71,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.com.android.wifi-watchlist=GoogleGuest \
 	ro.error.receiver.system.apps=com.google.android.feedback \
 	ro.setupwizard.enterprize_mode=1 \
-	ro.url.legal=http://www.google.com/intl/%%s/mobile/android/basic/phone-legal.html \
-	ro.url.legal.android_privacy=http://www.google.com/intl/%%s/mobile/android/basic/privacy.html \
+	ro.url.legal=http://www.google.com/intl/%s/mobile/android/basic/phone-legal.html \
+	ro.url.legal.android_privacy=http://www.google.com/intl/%s/mobile/android/basic/privacy.html \
 
-#$(call inherit-product-if-exists, vendor/google/product/gms-lib.mk)
+$(call inherit-product-if-exists, vendor/google/product/gms-lib.mk)
 $(call inherit-product-if-exists, vendor/google/product/gms-jar.mk)
 $(call inherit-product-if-exists, vendor/google/product/data.mk)
 
