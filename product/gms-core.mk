@@ -1,7 +1,6 @@
 PRODUCT_PACKAGES := \
 	Maps \
 	GoogleContactsSyncAdapter \
-	GoogleCalendarSyncAdapter \
 	WebViewGoogle \
 
 PRODUCT_PACKAGES += \
