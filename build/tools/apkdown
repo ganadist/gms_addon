@@ -26,6 +26,7 @@ def apk_rename(filename):
                 break
     newname = attrs['name'] + '.apk'
     if filename != newname:
+        print('rename %s => %s'%(filename, newname))
         if os.access(newname, os.F_OK):
             os.unlink(newname)
         os.rename(filename, newname)
