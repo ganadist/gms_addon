@@ -1,0 +1,262 @@
+#!/usr/bin/env python2
+
+import os, sys
+reload(sys)
+sys.setdefaultencoding("utf8")
+import tempfile
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "androguard"))
+import xml.dom.minidom
+from androguard.core.bytecodes import apk
+
+STUB_ACTIVITY="com.google.android.stub.PlayStoreRedirectActivity"
+
+MANIFEST_TEMPLATE="""<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:installLocation="internalOnly" 
+    android:versionCode="1"
+    android:versionName="0.1 (stub)"
+    package="%(pkg)s" >
+
+    <application android:allowBackup="false"
+            android:icon="%(icon)s" >
+        <activity
+            android:launchMode="singleTask"
+            android:name="%(stub)s"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.NoDisplay" >
+        </activity>
+    </application>
+</manifest>"""
+
+ANDROID_MK_TEMPLATE = """
+LOCAL_PATH:= $(call my-dir)
+include $(CLEAR_VARS)
+
+LOCAL_MODULE_TAGS := optional
+LOCAL_SRC_FILES := $(call all-java-files-under, ../stubs/src)
+LOCAL_DEX_PREOPT := false
+LOCAL_PACKAGE_NAME := %(pkgname)s
+LOCAL_MODULE_PATH := %(outdir)s
+
+include $(BUILD_PACKAGE)
+"""
+
+def get_res(res, el, key):
+    pkgname = res.get_packages_names()[0]
+
+    if not el.attributes.has_key(key):
+        return
+    v = el.attributes[key].value
+
+    if not v.startswith("@"):
+        return
+    restype, value, rid = res.get_id(pkgname, int(v[1:], 16))
+    return "@" + "/".join((restype, value))
+
+def create_alias(out, el, res):
+    if not el.getElementsByTagName("intent-filter"):
+        return []
+
+    alias = out.createElement('activity-alias')
+    name = el.attributes["android:name"].value
+    alias.setAttribute("android:name", name)
+
+    resources = []
+
+    for k in ("android:icon", "android:label"):
+        v = get_res(res, el, k)
+        if v:
+            resources.append(v)
+            alias.setAttribute(k, v)
+
+    alias.setAttribute("android:targetActivity", STUB_ACTIVITY)
+
+    app = out.getElementsByTagName('application')[0]
+
+
+    #for child in el.childNodes:
+    for child in el.getElementsByTagName("intent-filter"):
+        alias.appendChild(child.cloneNode(True))
+
+    app.appendChild(alias)
+    return resources
+
+apks = {
+    "com.google.android.youtube": "Youtube",
+    "com.google.android.apps.books": "Books",
+    "com.google.android.videos": "Videos",
+    "com.google.android.apps.docs": "Drive",
+    "com.google.android.apps.cloudprint": "CloudPrint2",
+    "com.google.android.apps.plus": "Plus",
+    "com.google.android.apps.translate": "Translate",
+    "com.google.android.apps.fitness": "PrebuiltFitness",
+    #"com.google.android.apps.maps": "Maps",
+}
+
+APKOUTDIR = "vendor/google/apps/stubs2/"
+TOP = os.getenv("ANDROID_BUILD_TOP")
+DIRNAME = 'vendor/google/src'
+
+class GenerateStub:
+    def __init__(self, apkfile):
+        a = apk.APK(apkfile)
+        self.pkgname = a.get_package()
+        self.apk = a
+
+    def getPkgName(self):
+        return self.pkgname
+
+    def build(self):
+        a = self.apk
+
+        apkname = apks[self.pkgname] + "Stub"
+        outdir = os.path.join(TOP, DIRNAME, apkname)
+        if not os.path.isdir(outdir):
+            os.makedirs(outdir)
+        self.apkname = apkname
+        self.outdir = outdir
+        apkfile = os.path.join(TOP, APKOUTDIR, apkname, apkname + ".apk")
+
+        self.res = a.get_android_resources()
+        self.axml = a.get_android_manifest_xml()
+
+        self.gathered_res = set([])
+
+        androidmk = self.generateAndroidMk()
+        self.generateAndroidManifest()
+        self.generateStrings()
+        self.generateDrawables()
+
+        build_cmd = ("env",
+            "ONE_SHOT_MAKEFILE=%s"%androidmk[len(TOP) + 1:],
+            "make", "-C",
+            TOP,
+            "-f", "build/core/main.mk", "all_modules")
+        os.system(" ".join(build_cmd))
+        CERT = "META-INF/CERT.RSA"
+        def system(cmd):
+            print(cmd)
+            os.system(cmd)
+        system("rm -f %s"%CERT)
+        system("7z d %s %s"%(apkfile, CERT))
+        system("7z x %s %s"%(self.apk.filename, CERT))
+        system("7z a %s %s"%(apkfile, CERT))
+        system("zipalign -f -p 4 %s %s.aligned"%(apkfile, apkfile))
+        system("mv -f %s.aligned %s"%(apkfile, apkfile))
+        system("rm -f %s"%CERT)
+
+    def generateStrings(self):
+        strings = {}
+
+        for locale in self.res.get_locales(self.pkgname):
+            stringres = {}
+            for resvalue in filter(lambda x: x.startswith('@string/'),
+                    self.gathered_res):
+                res = resvalue.split('/')[1]
+                v = self.res.get_string(self.pkgname, res, locale)
+                if not v: continue
+                k, v = v
+                if v:
+                    stringres[k] = v
+            strings[locale] = stringres
+
+        for locale in strings:
+            stringres = strings[locale]
+            if locale == '\x00\x00':
+                values = 'values'
+            else:
+                values = 'values-' + locale
+
+            resdir = os.path.join(self.outdir, "res", values)
+            resfile = os.path.join(resdir, "strings.xml")
+            resdom = xml.dom.minidom.getDOMImplementation().createDocument(None, "resources", None)
+            has_value = False
+            for res in stringres:
+                v = stringres[res]
+                if not v.strip(): continue
+                v = v.replace("'", "\\'")
+                v = v.replace('"', '\\"')
+                text = resdom.createElement("string")
+                text.setAttribute("name", res)
+                text.appendChild(resdom.createTextNode(v))
+                resdom.documentElement.appendChild(text)
+                has_value = True
+            if has_value:
+                if not os.path.isdir(resdir):
+                    os.makedirs(resdir)
+
+                with open(resfile, "w") as fp:
+                    fp.write(resdom.toxml())
+
+    def generateDrawables(self):
+        files = self.apk.get_files()
+        def isdrawable(filename):
+            if filename.startswith('res/drawable'):
+                return True
+            if filename.startswith('res/mipmap'):
+                return True
+        
+        files = filter(lambda x: isdrawable(x), files)
+        for filename in files:
+            for resvalue in self.gathered_res:
+                restype, res = resvalue.split('/')
+                if not filename.startswith('res/' + restype[1:]):
+                    continue
+                basename = os.path.basename(filename).split('.')[0]
+                if basename != res: continue
+
+                newfile = os.path.join(self.outdir, filename)
+                dname = os.path.dirname(newfile)
+                if not os.path.isdir(dname):
+                    os.makedirs(dname)
+                with open(newfile, "w") as fp:
+                    fp.write(self.apk.get_file(filename))
+
+
+    def generateAndroidMk(self):
+        androidmk = os.path.join(self.outdir, "Android.mk")
+        with open(androidmk, "w") as fp:
+            fp.write(ANDROID_MK_TEMPLATE%{
+                "pkgname":self.apkname,
+                "outdir":APKOUTDIR,
+            })
+        return androidmk
+
+    def generateAndroidManifest(self):
+        axml = self.axml
+        app = axml.getElementsByTagName("application")[0]
+        d = {}
+        for k in ("icon", "label"):
+            v = get_res(self.res, app, "android:" + k)
+            if v:
+                self.gathered_res.add(v)
+                d[k] = v
+        d.update({
+            'pkg': self.pkgname,
+            'stub': STUB_ACTIVITY,
+        })
+
+        out = xml.dom.minidom.parseString(MANIFEST_TEMPLATE%d)
+
+        activities = axml.getElementsByTagName("activity")
+        aliases = axml.getElementsByTagName("activity-alias")
+
+        for activity in activities:
+            self.gathered_res.update(create_alias(out, activity, self.res))
+
+        for alias in aliases:
+            self.gathered_res.update(create_alias(out, activity, self.res))
+
+        with open(os.path.join(self.outdir, "AndroidManifest.xml"), "w") as fp:
+            fp.write(out.toxml())
+
+
+if __name__ == '__main__':
+    for F in sys.argv[1:]:
+        stub = GenerateStub(F)
+        if not stub.getPkgName() in apks:
+            continue
+        stub.build()
+
