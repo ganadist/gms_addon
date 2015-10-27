@@ -134,18 +134,31 @@ class GenerateStub:
             "make", "-C",
             TOP,
             "-f", "build/core/main.mk", "all_modules")
-        os.system(" ".join(build_cmd))
+        assert os.system(" ".join(build_cmd)) == 0
+
+        self.overridePublicCert(apkfile)
+
+    def overridePublicCert(self, apkfile):
         CERT = "META-INF/CERT.RSA"
+        tmpdir = tempfile.mkdtemp()
         def system(cmd):
             print(cmd)
-            os.system(cmd)
-        system("rm -f %s"%CERT)
-        system("7z d %s %s"%(apkfile, CERT))
-        system("7z x %s %s"%(self.apk.filename, CERT))
-        system("7z a %s %s"%(apkfile, CERT))
-        system("zipalign -f -p 4 %s %s.aligned"%(apkfile, apkfile))
-        system("mv -f %s.aligned %s"%(apkfile, apkfile))
-        system("rm -f %s"%CERT)
+            assert os.system(cmd) == 0
+        script = ("7z d %(dstfile)s %(cert)s",
+                "7z x -o%(tmpdir)s %(srcfile)s %(cert)s",
+                "(cd %(tmpdir)s && 7z a %(dstfile)s %(cert)s)",
+                "zipalign -f -p 4 %(dstfile)s %(dstfile)s.aligned",
+                "mv -f %(dstfile)s.aligned %(dstfile)s",
+                "rm -rf %(tmpdir)s",
+        )
+        script = "&&".join(script)
+        script = script%{
+                "dstfile": apkfile,
+                "srcfile": self.apk.filename,
+                "cert" : CERT,
+                "tmpdir": tmpdir
+        }
+        system(script)
 
     def generateStrings(self):
         strings = {}
