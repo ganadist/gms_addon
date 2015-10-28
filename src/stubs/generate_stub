@@ -19,8 +19,9 @@ MANIFEST_TEMPLATE="""<?xml version="1.0" encoding="utf-8" standalone="no"?>
     android:versionName="0.1 (stub)"
     package="%(pkg)s" >
 
-    <application android:allowBackup="false"
-            android:icon="%(icon)s" >
+    <uses-sdk android:targetSdkVersion="3" />
+
+    <application android:allowBackup="false" >
         <activity
             android:launchMode="singleTask"
             android:name="%(stub)s"
@@ -43,17 +44,40 @@ LOCAL_MODULE_PATH := %(outdir)s
 include $(BUILD_PACKAGE)
 """
 
-def get_res(res, el, key):
-    pkgname = res.get_packages_names()[0]
+def copy_attribute(src, dst, key, res):
+    if not src.attributes.has_key(key):
+        return (0, None)
+    v = src.attributes[key].value
+    if v.startswith("@"):
+        resid = int(v[1:], 16)
+        for pkgname in res.get_packages_names():
+            foundres = res.get_id(pkgname, resid)
+            if foundres:
+                restype, value, resid = foundres
+                v = "@" + "/".join((restype, value))
+                break
+        else:
+            return (0, None)
+    else:
+        resid = 0
 
+    dst.setAttribute(key, v)
+    return resid, v
+
+def get_res(res, el, key):
     if not el.attributes.has_key(key):
-        return
+        return (0, None)
     v = el.attributes[key].value
 
     if not v.startswith("@"):
-        return
-    restype, value, rid = res.get_id(pkgname, int(v[1:], 16))
-    return "@" + "/".join((restype, value))
+        return (0, None)
+    resid = int(v[1:], 16)
+    for pkgname in res.get_packages_names():
+        foundres = res.get_id(pkgname, resid)
+        if foundres:
+            restype, value, rid = foundres
+            return resid, "@" + "/".join((restype, value))
+    return (0, None)
 
 def create_alias(out, el, res):
     if not el.getElementsByTagName("intent-filter"):
@@ -66,19 +90,23 @@ def create_alias(out, el, res):
     resources = []
 
     for k in ("android:icon", "android:label"):
-        v = get_res(res, el, k)
-        if v:
-            resources.append(v)
-            alias.setAttribute(k, v)
+        resid, resname = get_res(res, el, k)
+        if resname:
+            resources.append((resid, resname))
+            alias.setAttribute(k, resname)
 
     alias.setAttribute("android:targetActivity", STUB_ACTIVITY)
 
     app = out.getElementsByTagName('application')[0]
 
 
+    label = "android:label"
     #for child in el.childNodes:
     for child in el.getElementsByTagName("intent-filter"):
-        alias.appendChild(child.cloneNode(True))
+        node = child.cloneNode(True)
+        if node.hasAttribute(label):
+            node.removeAttribute(label)
+        alias.appendChild(node)
 
     app.appendChild(alias)
     return resources
@@ -89,15 +117,27 @@ apks = {
     "com.google.android.videos": "Videos",
     "com.google.android.apps.docs": "Drive",
     "com.google.android.apps.cloudprint": "CloudPrint2",
-    "com.google.android.apps.plus": "Plus",
+    "com.google.android.apps.plus": "PlusOne",
     "com.google.android.apps.translate": "Translate",
     "com.google.android.apps.fitness": "PrebuiltFitness",
-    #"com.google.android.apps.maps": "Maps",
+    "com.google.android.apps.maps": "Maps",
 }
 
 APKOUTDIR = "vendor/google/apps/stubs2/"
 TOP = os.getenv("ANDROID_BUILD_TOP")
 DIRNAME = 'vendor/google/src'
+
+class TempDir:
+    def __init__(self):
+        pass
+
+    def __enter__(self):
+        self.tempdir = tempfile.mkdtemp()
+        return self.tempdir
+
+    def __exit__(self, type, value, traceback):
+        os.system("rm -rf " + self.tempdir)
+        return value
 
 class GenerateStub:
     def __init__(self, apkfile):
@@ -122,7 +162,8 @@ class GenerateStub:
         self.res = a.get_android_resources()
         self.axml = a.get_android_manifest_xml()
 
-        self.gathered_res = set([])
+        self.drawable_res = set([])
+        self.string_res = set([])
 
         androidmk = self.generateAndroidMk()
         self.generateAndroidManifest()
@@ -138,42 +179,49 @@ class GenerateStub:
 
         self.overridePublicCert(apkfile)
 
+    def prepare_resources(self, resource_key):
+        rid, res_name = resource_key
+        if rid == 0:
+            return
+        if res_name.startswith("@string"):
+            self.string_res.add(resource_key)
+        else:
+            self.drawable_res.add(resource_key)
+
     def overridePublicCert(self, apkfile):
         CERT = "META-INF/CERT.RSA"
-        tmpdir = tempfile.mkdtemp()
         def system(cmd):
             print(cmd)
             assert os.system(cmd) == 0
-        script = ("7z d %(dstfile)s %(cert)s",
+
+        with TempDir() as tmpdir:
+            script = ("7z d %(dstfile)s %(cert)s",
                 "7z x -o%(tmpdir)s %(srcfile)s %(cert)s",
-                "(cd %(tmpdir)s && 7z a %(dstfile)s %(cert)s)",
-                "zipalign -f -p 4 %(dstfile)s %(dstfile)s.aligned",
-                "mv -f %(dstfile)s.aligned %(dstfile)s",
-                "rm -rf %(tmpdir)s",
-        )
-        script = "&&".join(script)
-        script = script%{
-                "dstfile": apkfile,
-                "srcfile": self.apk.filename,
-                "cert" : CERT,
-                "tmpdir": tmpdir
-        }
-        system(script)
+                    "(cd %(tmpdir)s && 7z a %(dstfile)s %(cert)s)",
+                    "zipalign -f -p 4 %(dstfile)s %(dstfile)s.aligned",
+                    "mv -f %(dstfile)s.aligned %(dstfile)s",
+            )
+            script = "&&".join(script)
+            script = script%{
+                    "dstfile": apkfile,
+                    "srcfile": self.apk.filename,
+                    "cert" : CERT,
+                    "tmpdir": tmpdir
+            }
+            system(script)
 
     def generateStrings(self):
         strings = {}
-
-        for locale in self.res.get_locales(self.pkgname):
-            stringres = {}
-            for resvalue in filter(lambda x: x.startswith('@string/'),
-                    self.gathered_res):
-                res = resvalue.split('/')[1]
-                v = self.res.get_string(self.pkgname, res, locale)
-                if not v: continue
-                k, v = v
-                if v:
-                    stringres[k] = v
-            strings[locale] = stringres
+        for resid, resname in self.string_res:
+            for config, value in self.res.get_resolved_res_configs(resid):
+                lang = config.get_language()
+                region = config.get_country()
+                if region == '\x00\x00':
+                    locale = lang
+                else:
+                    locale = '-r'.join((lang, region))
+                stringres = strings.setdefault(locale, {})
+                stringres[resname.split('/')[1]] = value
 
         for locale in strings:
             stringres = strings[locale]
@@ -204,28 +252,20 @@ class GenerateStub:
                     fp.write(resdom.toxml())
 
     def generateDrawables(self):
-        files = self.apk.get_files()
-        def isdrawable(filename):
-            if filename.startswith('res/drawable'):
-                return True
-            if filename.startswith('res/mipmap'):
-                return True
-        
-        files = filter(lambda x: isdrawable(x), files)
-        for filename in files:
-            for resvalue in self.gathered_res:
-                restype, res = resvalue.split('/')
-                if not filename.startswith('res/' + restype[1:]):
-                    continue
-                basename = os.path.basename(filename).split('.')[0]
-                if basename != res: continue
-
+        for rid, resname in self.drawable_res:
+            for config, filename in self.res.get_resolved_res_configs(rid):
                 newfile = os.path.join(self.outdir, filename)
                 dname = os.path.dirname(newfile)
                 if not os.path.isdir(dname):
                     os.makedirs(dname)
-                with open(newfile, "w") as fp:
-                    fp.write(self.apk.get_file(filename))
+                if not newfile.endswith(".xml"):
+                    with open(newfile, "w") as fp:
+                        buf = self.apk.get_file(filename)
+                        fp.write(buf)
+                else:
+                    pass
+                    #doc = xml.dom.minidom.parseString(apk.AXMLPrinter(buf).get_buff())
+                    #fp.write(doc.toxml())
 
 
     def generateAndroidMk(self):
@@ -239,28 +279,32 @@ class GenerateStub:
 
     def generateAndroidManifest(self):
         axml = self.axml
+        manifest = axml.getElementsByTagName("manifest")[0]
         app = axml.getElementsByTagName("application")[0]
-        d = {}
-        for k in ("icon", "label"):
-            v = get_res(self.res, app, "android:" + k)
-            if v:
-                self.gathered_res.add(v)
-                d[k] = v
-        d.update({
+
+        d = {
             'pkg': self.pkgname,
             'stub': STUB_ACTIVITY,
-        })
+        }
 
         out = xml.dom.minidom.parseString(MANIFEST_TEMPLATE%d)
+        outmanifest = out.getElementsByTagName("manifest")[0]
+        outapp = out.getElementsByTagName("application")[0]
+
+        self.prepare_resources(
+                copy_attribute(manifest, outmanifest, "android:sharedUserId",
+                    self.res))
+        for key in ("android:icon", "android:label"):
+            self.prepare_resources(
+                copy_attribute(app, outapp, key, self.res))
 
         activities = axml.getElementsByTagName("activity")
         aliases = axml.getElementsByTagName("activity-alias")
 
-        for activity in activities:
-            self.gathered_res.update(create_alias(out, activity, self.res))
-
-        for alias in aliases:
-            self.gathered_res.update(create_alias(out, activity, self.res))
+        for activity in activities + aliases:
+            resources = create_alias(out, activity, self.res)
+            for res in resources:
+                self.prepare_resources(res)
 
         with open(os.path.join(self.outdir, "AndroidManifest.xml"), "w") as fp:
             fp.write(out.toxml())
