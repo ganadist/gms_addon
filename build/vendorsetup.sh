@@ -7,11 +7,10 @@ apkdown() {
 }
 
 cleanodex() {
+  rm -rf $OUT/system/framework $OUT/system/app $OUT/system/priv-app
   find $OUT/ -name "*.jar" -exec rm -f {} \;
   find $OUT/ -name "*.apk" -exec rm -f {} \;
-  find $OUT/ -name "oat" -exec rm -rf {} \;
   find $OUT/ -name "*.prop" -exec rm -f {} \;
-  rm -rf $OUT/system/framework $OUT/system/app $OUT/system/priv-app
 }
 
 generate_stub() {
