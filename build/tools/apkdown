@@ -33,7 +33,7 @@ def apk_rename(filename):
 
 if __name__ == '__main__':
     import sys
-    url = sys.argv[1]
-    if url.startswith('http'):
-        url = down(url)
-    apk_rename(url)
+    for url in sys.argv[1:]:
+        if url.startswith('http'):
+            url = down(url)
+        apk_rename(url)
