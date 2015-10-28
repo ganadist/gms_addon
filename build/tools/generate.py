@@ -17,19 +17,7 @@ STUBS = os.path.join(dst, STUBS_PREFIX)
 def stub(fn):
     return os.path.join(STUBS_PREFIX, fn)
 
-install_to_data = (
-    'GoogleEarth',
-    'HangOutDialer',
-    'FitnessPrebuilt',
-    'PrebuiltNewsWeather',
-    'PlusOne',
-    'PdfViewer',
-    'Translate',
-    'Videos',
-)
-
 need_to_odex = (
-    'GoogleCalendarSyncAdapter',
     'GoogleContactsSyncAdapter',
     'LatinImeGoogle',
     'GoogleTTS',
@@ -91,8 +79,6 @@ packages = (
 	('com.google.android.play.games.apk', 'PlayGames',),
 	('com.google.android.syncadapters.contacts.apk',
     'GoogleContactsSyncAdapter',),
-    ('com.google.android.syncadapters.calendar.apk',
-    'GoogleCalendarSyncAdapter',  ),
 	('com.google.android.talk.apk', 'Hangouts',),
 	('com.google.android.tts.apk', 'GoogleTTS', 'PicoTts'),
 	('com.google.android.videos.apk', 'Videos',),
@@ -112,7 +98,17 @@ packages = (
             'Newsstand'),
 	(stub('com.google.android.apps.messaging.apk'), 'PrebuiltBugleStub',
             'PrebuiltBugle'),
-	(stub('com.google.android.keep.apk'), 'PrebuiltKeepStub', 'PrebuiltKeep'),
+    (stub('com.google.android.keep.apk'), 'PrebuiltKeepStub', 'PrebuiltKeep'),
+	(stub('com.google.android.apps.books.apk'), 'BooksStub', 'Books'),
+	(stub('com.google.android.apps.cloudprint.apk'), 'CloudPrint2Stub', 'CloudPrint2'),
+	(stub('com.google.android.apps.docs.apk'), 'DriveStub', 'Drive'),
+	(stub('com.google.android.apps.fitness.apk'), 'FitnessPrebuiltStub',
+            'FitnessPrebuilt'),
+	(stub('com.google.android.apps.maps.apk'), 'MapsStub', 'Maps'),
+	(stub('com.google.android.apps.plus.apk'), 'PlusOneStub', 'PlusOne'),
+	(stub('com.google.android.apps.translate.apk'), 'TranslateStub', 'Translate'),
+	(stub('com.google.android.videos.apk'), 'VideosStub', 'Videos'),
+	(stub('com.google.android.youtube.apk'), 'YouTubeStub', 'YouTube'),
 
 )
 
@@ -247,13 +243,10 @@ def generate_package(info, privileged):
         yield 'LOCAL_PRIVILEGED_MODULE := true'
     yield 'LOCAL_MODULE_OWNER := google'
 
-    if package in install_to_data:
-        yield 'LOCAL_MODULE_PATH := $(TARGET_OUT_DATA_APPS)'
-
-    #if package in need_to_odex: # and not package in install_to_data:
-    #    yield 'LOCAL_DEX_PREOPT := true'
-    #else:
-    #    yield 'LOCAL_DEX_PREOPT := false'
+    if 0 and package in need_to_odex:
+        yield 'LOCAL_DEX_PREOPT := true'
+    else:
+        yield 'LOCAL_DEX_PREOPT := false'
 
     yield 'include $(BUILD_PREBUILT)'
     yield ''

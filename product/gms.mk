@@ -1,29 +1,29 @@
 PRODUCT_PACKAGES := \
 	Books \
+	CloudPrint2 \
+	Drive \
+	PlusOne \
+	FitnessPrebuilt \
 	GoogleEars \
-	YouTube \
-	PlayGames \
 	Newsstand \
 	PrebuiltKeep \
 	KoreanIME \
 	PrebuiltBugle \
-	CloudPrint2 \
 	DeviceAssist \
-	Drive \
 	EditorsDocs \
 	EditorsSheets \
 	EditorsSlides \
-	talkback \
-
-PRODUCT_PACKAGES += \
-	GoogleEarth \
-	HangOutDialer \
-	FitnessPrebuilt \
+	PlayGames \
 	PrebuiltNewsWeather \
-	PlusOne \
-	PdfViewer \
 	Translate \
 	Videos \
+	YouTube \
+	talkback \
+
+#PRODUCT_PACKAGES += \
+	GoogleEarth \
+	HangOutDialer \
+	PdfViewer \
 
 $(call inherit-product-if-exists, vendor/google/product/gms-core.mk)
 

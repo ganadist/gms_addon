@@ -1,7 +1,8 @@
+
 PRODUCT_PACKAGES := \
-	Maps \
 	GoogleContactsSyncAdapter \
 	WebViewGoogle \
+	Maps \
 
 PRODUCT_PACKAGES += \
 	Phonesky \
