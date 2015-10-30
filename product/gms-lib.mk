@@ -18,3 +18,6 @@ $(foreach f, $(DRM_LIBS), $(call drm-copy-lib,$(f)))
 
 DRM_LIBDIR :=
 DRM_LIBS :=
+
+PRODUCT_PROPERTY_OVERRIDES := \
+	ro.com.widevine.cachesize=16777216 \
