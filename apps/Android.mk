@@ -13,8 +13,8 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# FackLock : 6.0-2256973
-LOCAL_MODULE := FackLock
+# FaceLock : 6.0-2256973
+LOCAL_MODULE := FaceLock
 LOCAL_SRC_FILES := com.android.facelock.apk
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -80,7 +80,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# EditorsDocs : 1.4.432.06.34
+# EditorsDocs : 1.4.432.07.34
 LOCAL_MODULE := EditorsDocs
 LOCAL_SRC_FILES := com.google.android.apps.docs.editors.docs.apk
 LOCAL_MODULE_CLASS := APPS
@@ -756,7 +756,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Velvet : 5.4.28.19.arm
+# Velvet : 5.5.28.16.arm
 LOCAL_MODULE := Velvet
 LOCAL_SRC_FILES := com.google.android.googlequicksearchbox.apk
 LOCAL_MODULE_CLASS := APPS

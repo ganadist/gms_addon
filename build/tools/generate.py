@@ -39,7 +39,7 @@ need_to_odex = (
 
 packages = (
     ('com.android.chrome.apk', 'Chrome', 'Browser'),
-    ('com.android.facelock.apk', 'FackLock', ),
+    ('com.android.facelock.apk', 'FaceLock', ),
 	('com.google.android.GoogleCamera.apk', 'GoogleCamera', 'Camera2'),
 	('com.google.android.apps.books.apk', 'Books'),
 	('com.google.android.apps.cavalry.apk', 'DeviceAssist'),
