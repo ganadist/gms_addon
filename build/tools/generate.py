@@ -109,6 +109,7 @@ packages = (
 	(stub('com.google.android.apps.translate.apk'), 'TranslateStub', 'Translate'),
 	(stub('com.google.android.videos.apk'), 'VideosStub', 'Videos'),
 	(stub('com.google.android.youtube.apk'), 'YouTubeStub', 'YouTube'),
+	(stub('com.google.android.talk.apk'), 'HangoutsStub','Hangouts',),
 
 )
 

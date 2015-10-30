@@ -121,6 +121,7 @@ apks = {
     "com.google.android.apps.translate": "Translate",
     "com.google.android.apps.fitness": "PrebuiltFitness",
     "com.google.android.apps.maps": "Maps",
+    "com.google.android.talk": "Hangouts",
 }
 
 APKOUTDIR = "vendor/google/apps/stubs2/"
