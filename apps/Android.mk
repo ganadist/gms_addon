@@ -69,7 +69,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Drive : 2.3.357.23.34
+# Drive : 2.3.414.31.34
 LOCAL_MODULE := Drive
 LOCAL_SRC_FILES := com.google.android.apps.docs.apk
 LOCAL_MODULE_CLASS := APPS
@@ -91,7 +91,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# EditorsSheets : 1.4.432.06.34
+# EditorsSheets : 1.4.432.10.34
 LOCAL_MODULE := EditorsSheets
 LOCAL_SRC_FILES := com.google.android.apps.docs.editors.sheets.apk
 LOCAL_MODULE_CLASS := APPS
@@ -179,7 +179,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# PrebuiltBugle : 1.5.037 (2294727-36)
+# PrebuiltBugle : 1.6.043 (2395722-36.phone)
 LOCAL_MODULE := PrebuiltBugle
 LOCAL_SRC_FILES := com.google.android.apps.messaging.apk
 LOCAL_MODULE_CLASS := APPS
@@ -214,7 +214,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# PlusOne : 6.6.0.105800701
+# PlusOne : 6.7.0.106735273
 LOCAL_MODULE := PlusOne
 LOCAL_SRC_FILES := com.google.android.apps.plus.apk
 LOCAL_MODULE_CLASS := APPS
@@ -260,7 +260,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# PrebuiltDeskClockGoogle : 4.2 (2269723)
+# PrebuiltDeskClockGoogle : 4.2.1 (2383161)
 LOCAL_MODULE := PrebuiltDeskClockGoogle
 LOCAL_SRC_FILES := com.google.android.deskclock.apk
 LOCAL_MODULE_CLASS := APPS
@@ -307,7 +307,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# KoreanIME : 1.3.1.98367236-preload-armeabi-v7a
+# KoreanIME : 1.3.2.102018498-armeabi-v7a
 LOCAL_MODULE := KoreanIME
 LOCAL_SRC_FILES := com.google.android.inputmethod.korean.apk
 LOCAL_MODULE_CLASS := APPS
@@ -376,7 +376,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# PlayGames : 3.3.58 (2285964-036)
+# PlayGames : 3.4.12 (2379351-036)
 LOCAL_MODULE := PlayGames
 LOCAL_SRC_FILES := com.google.android.play.games.apk
 LOCAL_MODULE_CLASS := APPS
@@ -456,7 +456,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# YouTube : 10.42.52
+# YouTube : 10.43.60
 LOCAL_MODULE := YouTube
 LOCAL_SRC_FILES := com.google.android.youtube.apk
 LOCAL_MODULE_CLASS := APPS
@@ -670,7 +670,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Phonesky : 5.10.30
+# Phonesky : 5.12.9
 LOCAL_MODULE := Phonesky
 LOCAL_SRC_FILES := com.android.vending.apk
 LOCAL_MODULE_CLASS := APPS
@@ -756,7 +756,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Velvet : 5.5.28.16.arm
+# Velvet : 5.5.29.19.arm
 LOCAL_MODULE := Velvet
 LOCAL_SRC_FILES := com.google.android.googlequicksearchbox.apk
 LOCAL_MODULE_CLASS := APPS
@@ -769,7 +769,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# PrebuiltGmsCore : 8.3.00 (2353383-436)
+# PrebuiltGmsCore : 8.3.01 (2385995-436)
 LOCAL_MODULE := PrebuiltGmsCore
 LOCAL_SRC_FILES := com.google.android.gms.apk
 LOCAL_MODULE_CLASS := APPS
