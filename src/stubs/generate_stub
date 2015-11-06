@@ -64,41 +64,26 @@ def copy_attribute(src, dst, key, res):
     dst.setAttribute(key, v)
     return resid, v
 
-def get_res(res, el, key):
-    if not el.attributes.has_key(key):
-        return (0, None)
-    v = el.attributes[key].value
-
-    if not v.startswith("@"):
-        return (0, None)
-    resid = int(v[1:], 16)
-    for pkgname in res.get_packages_names():
-        foundres = res.get_id(pkgname, resid)
-        if foundres:
-            restype, value, rid = foundres
-            return resid, "@" + "/".join((restype, value))
-    return (0, None)
-
 def create_alias(out, el, res):
     if not el.getElementsByTagName("intent-filter"):
         return []
 
     alias = out.createElement('activity-alias')
-    name = el.attributes["android:name"].value
-    alias.setAttribute("android:name", name)
 
     resources = []
 
-    for k in ("android:icon", "android:label"):
-        resid, resname = get_res(res, el, k)
+    for k in ("name", "icon", "label"):
+        keyname = "android:" + k
+        resid, resname = copy_attribute(el, alias, keyname, res)
         if resname:
             resources.append((resid, resname))
-            alias.setAttribute(k, resname)
 
     alias.setAttribute("android:targetActivity", STUB_ACTIVITY)
 
-    app = out.getElementsByTagName('application')[0]
+    if el.attributes["android:name"].value in disabled:
+        alias.setAttribute("android:enabled", "false")
 
+    app = out.getElementsByTagName('application')[0]
 
     label = "android:label"
     #for child in el.childNodes:
@@ -123,6 +108,10 @@ apks = {
     "com.google.android.apps.maps": "Maps",
     "com.google.android.talk": "Hangouts",
 }
+
+disabled = (
+    "com.google.android.apps.plus.phone.ConversationListActivity",
+)
 
 APKOUTDIR = "vendor/google/apps/stubs2/"
 TOP = os.getenv("ANDROID_BUILD_TOP")
@@ -163,11 +152,11 @@ class GenerateStub:
         self.res = a.get_android_resources()
         self.axml = a.get_android_manifest_xml()
 
-        self.drawable_res = set([])
-        self.string_res = set([])
+        self.resources = {}
 
         androidmk = self.generateAndroidMk()
         self.generateAndroidManifest()
+        self.generateBooleans()
         self.generateStrings()
         self.generateDrawables()
 
@@ -184,10 +173,12 @@ class GenerateStub:
         rid, res_name = resource_key
         if rid == 0:
             return
-        if res_name.startswith("@string"):
-            self.string_res.add(resource_key)
-        else:
-            self.drawable_res.add(resource_key)
+        if not res_name.startswith('@'):
+            print ("invalid resname:", rid, res_name)
+            return
+        restype, resname = res_name.split('/')
+        restype = restype[1:]
+        self.resources.setdefault(restype, set()).add(resource_key)
 
     def overridePublicCert(self, apkfile):
         CERT = "META-INF/CERT.RSA"
@@ -211,9 +202,45 @@ class GenerateStub:
             }
             system(script)
 
+    def generateBooleans(self):
+        bools = {}
+        for resid, resname in self.resources.get('bool', []):
+            for config, value in self.res.get_resolved_res_configs(resid):
+                version = config._get_tuple()[5]
+                if version == 0:
+                    version = ''
+                else:
+                    version = "-v%d"%version
+                boolres = bools.setdefault(version, {})
+                boolres[resname.split('/')[1]] = value
+
+        for version in bools:
+            boolres = bools[version]
+            values = "values" + version
+
+            resdir = os.path.join(self.outdir, "res", values)
+            resfile = os.path.join(resdir, "bools.xml")
+            resdom = xml.dom.minidom.getDOMImplementation().createDocument(None, "resources", None)
+            has_value = False
+            for res in boolres:
+                v = boolres[res]
+                if not v.strip(): continue
+                text = resdom.createElement("bool")
+                text.setAttribute("name", res)
+                text.appendChild(resdom.createTextNode(v))
+                resdom.documentElement.appendChild(text)
+                has_value = True
+            if has_value:
+                if not os.path.isdir(resdir):
+                    os.makedirs(resdir)
+
+                with open(resfile, "w") as fp:
+                    fp.write(resdom.toxml())
+
+
     def generateStrings(self):
         strings = {}
-        for resid, resname in self.string_res:
+        for resid, resname in self.resources.get('string', []):
             for config, value in self.res.get_resolved_res_configs(resid):
                 lang = config.get_language()
                 region = config.get_country()
@@ -253,7 +280,11 @@ class GenerateStub:
                     fp.write(resdom.toxml())
 
     def generateDrawables(self):
-        for rid, resname in self.drawable_res:
+        drawables = set()
+        for restype in 'drawable', 'mipmap':
+            resources = self.resources.get(restype, [])
+            drawables.update(resources)
+        for rid, resname in drawables:
             for config, filename in self.res.get_resolved_res_configs(rid):
                 newfile = os.path.join(self.outdir, filename)
                 dname = os.path.dirname(newfile)
