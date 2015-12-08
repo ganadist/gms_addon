@@ -1,7 +1,7 @@
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
-# Chrome : 46.0.2490.76
+# Chrome : 47.0.2526.76
 LOCAL_MODULE := Chrome
 LOCAL_SRC_FILES := com.android.chrome.apk
 LOCAL_MODULE_CLASS := APPS
@@ -13,7 +13,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# FaceLock : 6.0-2256973
+# FaceLock : 6.0.1
 LOCAL_MODULE := FaceLock
 LOCAL_SRC_FILES := com.android.facelock.apk
 LOCAL_MODULE_CLASS := APPS
@@ -69,7 +69,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Drive : 2.3.453.15.34
+# Drive : 2.3.474.21.34
 LOCAL_MODULE := Drive
 LOCAL_SRC_FILES := com.google.android.apps.docs.apk
 LOCAL_MODULE_CLASS := APPS
@@ -168,7 +168,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Maps : 9.17.0
+# Maps : 9.18.1
 LOCAL_MODULE := Maps
 LOCAL_SRC_FILES := com.google.android.apps.maps.apk
 LOCAL_MODULE_CLASS := APPS
@@ -236,19 +236,19 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# CalculatorGoogle : 5.2 (2280749)
+# CalculatorGoogle : 5.2 (2419427)
 LOCAL_MODULE := CalculatorGoogle
 LOCAL_SRC_FILES := com.google.android.calculator.apk
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
-LOCAL_OVERRIDES_PACKAGES := Calculator
+LOCAL_OVERRIDES_PACKAGES := Calculator ExactCalculator
 LOCAL_CERTIFICATE := PRESIGNED
 LOCAL_MODULE_OWNER := google
 LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# CalendarGooglePrebuilt : 5.2.7-107213440-release
+# CalendarGooglePrebuilt : 5.3-108865406-release
 LOCAL_MODULE := CalendarGooglePrebuilt
 LOCAL_SRC_FILES := com.google.android.calendar.apk
 LOCAL_MODULE_CLASS := APPS
@@ -295,7 +295,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# PrebuiltExchange3Google : 5.0.101238867
+# PrebuiltExchange3Google : 5.0.106634657
 LOCAL_MODULE := PrebuiltExchange3Google
 LOCAL_SRC_FILES := com.google.android.gm.exchange.apk
 LOCAL_MODULE_CLASS := APPS
@@ -353,7 +353,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# talkback : 4.3.1
+# talkback : 4.4.0
 LOCAL_MODULE := talkback
 LOCAL_SRC_FILES := com.google.android.marvin.talkback.apk
 LOCAL_MODULE_CLASS := APPS
@@ -376,7 +376,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# PlayGames : 3.4.12 (2379351-036)
+# PlayGames : 3.5.17 (2463965-036)
 LOCAL_MODULE := PlayGames
 LOCAL_SRC_FILES := com.google.android.play.games.apk
 LOCAL_MODULE_CLASS := APPS
@@ -443,7 +443,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# WebViewGoogle : 46.0.2490.76
+# WebViewGoogle : 47.0.2526.77
 LOCAL_MODULE := WebViewGoogle
 LOCAL_SRC_FILES := com.google.android.webview.apk
 LOCAL_MODULE_CLASS := APPS
@@ -456,7 +456,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# YouTube : 10.46.56
+# YouTube : 10.47.54
 LOCAL_MODULE := YouTube
 LOCAL_SRC_FILES := com.google.android.youtube.apk
 LOCAL_MODULE_CLASS := APPS
@@ -778,7 +778,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Phonesky : 6.0.0
+# Phonesky : 6.0.5
 LOCAL_MODULE := Phonesky
 LOCAL_SRC_FILES := com.android.vending.apk
 LOCAL_MODULE_CLASS := APPS
@@ -802,7 +802,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# GCS : C.1.6.4 (2107901)
+# GCS : C.1.6.5 (2344360)
 LOCAL_MODULE := GCS
 LOCAL_SRC_FILES := com.google.android.apps.gcs.apk
 LOCAL_MODULE_CLASS := APPS
@@ -839,7 +839,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# GoogleDialer : 2.2
+# GoogleDialer : 2.21
 LOCAL_MODULE := GoogleDialer
 LOCAL_SRC_FILES := com.google.android.dialer.apk
 LOCAL_MODULE_CLASS := APPS
@@ -940,7 +940,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# GooglePartnerSetup : 6.0-2256973
+# GooglePartnerSetup : 6.0.1
 LOCAL_MODULE := GooglePartnerSetup
 LOCAL_SRC_FILES := com.google.android.partnersetup.apk
 LOCAL_MODULE_CLASS := APPS
