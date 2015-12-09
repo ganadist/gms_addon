@@ -1,7 +1,7 @@
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
-# Chrome : 47.0.2526.76
+# Chrome : 47.0.2526.83
 LOCAL_MODULE := Chrome
 LOCAL_SRC_FILES := com.android.chrome.apk
 LOCAL_MODULE_CLASS := APPS
@@ -318,7 +318,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# LatinImeGoogle : 4.1.23043.2297020
+# LatinImeGoogle : 4.1.23103.2419427
 LOCAL_MODULE := LatinImeGoogle
 LOCAL_SRC_FILES := com.google.android.inputmethod.latin.apk
 LOCAL_MODULE_CLASS := APPS
@@ -814,7 +814,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# ConfigUpdater : 6.0-2256973
+# ConfigUpdater : 6.0.1
 LOCAL_MODULE := ConfigUpdater
 LOCAL_SRC_FILES := com.google.android.configupdater.apk
 LOCAL_MODULE_CLASS := APPS
@@ -852,7 +852,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# GoogleFeedback : 6.0-2256973
+# GoogleFeedback : 6.0.1
 LOCAL_MODULE := GoogleFeedback
 LOCAL_SRC_FILES := com.google.android.feedback.apk
 LOCAL_MODULE_CLASS := APPS
@@ -890,7 +890,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# GoogleServicesFramework : 6.0-2256973
+# GoogleServicesFramework : 6.0.1
 LOCAL_MODULE := GoogleServicesFramework
 LOCAL_SRC_FILES := com.google.android.gsf.apk
 LOCAL_MODULE_CLASS := APPS
@@ -902,7 +902,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# GoogleLoginService : 6.0-2256973
+# GoogleLoginService : 6.0.1
 LOCAL_MODULE := GoogleLoginService
 LOCAL_SRC_FILES := com.google.android.gsf.login.apk
 LOCAL_MODULE_CLASS := APPS
@@ -914,7 +914,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# GoogleOneTimeInitializer : 6.0-2256973
+# GoogleOneTimeInitializer : 6.0.1
 LOCAL_MODULE := GoogleOneTimeInitializer
 LOCAL_SRC_FILES := com.google.android.onetimeinitializer.apk
 LOCAL_MODULE_CLASS := APPS
@@ -927,7 +927,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# GooglePackageInstaller : 6.0-2256973
+# GooglePackageInstaller : 6.0.1
 LOCAL_MODULE := GooglePackageInstaller
 LOCAL_SRC_FILES := com.google.android.packageinstaller.apk
 LOCAL_MODULE_CLASS := APPS
@@ -978,9 +978,21 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# GoogleBackupTransport : 6.0-2256973
+# GoogleBackupTransport : 6.0.1
 LOCAL_MODULE := GoogleBackupTransport
 LOCAL_SRC_FILES := com.google.android.backuptransport.apk
+LOCAL_MODULE_CLASS := APPS
+LOCAL_MODULE_TAGS := optional
+LOCAL_CERTIFICATE := PRESIGNED
+LOCAL_PRIVILEGED_MODULE := true
+LOCAL_MODULE_OWNER := google
+LOCAL_DEX_PREOPT := false
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+# NfcProvision : 5.0.10
+LOCAL_MODULE := NfcProvision
+LOCAL_SRC_FILES := com.google.android.nfcprovision.apk
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
 LOCAL_CERTIFICATE := PRESIGNED
