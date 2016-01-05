@@ -36,7 +36,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Books : 3.7.21
+# Books : 3.7.47
 LOCAL_MODULE := Books
 LOCAL_SRC_FILES := com.google.android.apps.books.apk
 LOCAL_MODULE_CLASS := APPS
@@ -80,7 +80,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# EditorsDocs : 1.4.452.12.34
+# EditorsDocs : 1.4.492.17.34
 LOCAL_MODULE := EditorsDocs
 LOCAL_SRC_FILES := com.google.android.apps.docs.editors.docs.apk
 LOCAL_MODULE_CLASS := APPS
@@ -102,7 +102,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# EditorsSlides : 1.2.452.12.34
+# EditorsSlides : 1.2.492.18.34
 LOCAL_MODULE := EditorsSlides
 LOCAL_SRC_FILES := com.google.android.apps.docs.editors.slides.apk
 LOCAL_MODULE_CLASS := APPS
@@ -202,7 +202,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Photos : 1.9.0.107816786
+# Photos : 1.11.0.110496109
 LOCAL_MODULE := Photos
 LOCAL_SRC_FILES := com.google.android.apps.photos.apk
 LOCAL_MODULE_CLASS := APPS
@@ -307,7 +307,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# KoreanIME : 1.3.2.102018498-armeabi-v7a
+# KoreanIME : 1.4.0.110432684-armeabi-v7a
 LOCAL_MODULE := KoreanIME
 LOCAL_SRC_FILES := com.google.android.inputmethod.korean.apk
 LOCAL_MODULE_CLASS := APPS
@@ -323,6 +323,7 @@ LOCAL_MODULE := LatinImeGoogle
 LOCAL_SRC_FILES := com.google.android.inputmethod.latin.apk
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
+LOCAL_PREBUILT_JNI_LIBS := LatinImeGoogle/lib/arm/libjni_latinimegoogle.so LatinImeGoogle/lib/arm/libjni_keyboarddecoder.so
 LOCAL_OVERRIDES_PACKAGES := LatinIME OpenWnn
 LOCAL_CERTIFICATE := PRESIGNED
 LOCAL_MODULE_OWNER := google
@@ -364,7 +365,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Music2 : 6.1.2116T.2441907
+# Music2 : 6.2.2224U.2493459
 LOCAL_MODULE := Music2
 LOCAL_SRC_FILES := com.google.android.music.apk
 LOCAL_MODULE_CLASS := APPS
@@ -456,7 +457,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# YouTube : 10.47.54
+# YouTube : 10.49.59
 LOCAL_MODULE := YouTube
 LOCAL_SRC_FILES := com.google.android.youtube.apk
 LOCAL_MODULE_CLASS := APPS
