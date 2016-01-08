@@ -248,7 +248,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# CalendarGooglePrebuilt : 5.3-108865406-release
+# CalendarGooglePrebuilt : 5.3.1-109151569-release
 LOCAL_MODULE := CalendarGooglePrebuilt
 LOCAL_SRC_FILES := com.google.android.calendar.apk
 LOCAL_MODULE_CLASS := APPS
@@ -318,12 +318,11 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# LatinImeGoogle : 4.1.23103.2419427
+# LatinImeGoogle : 4.1.23153.2501950
 LOCAL_MODULE := LatinImeGoogle
 LOCAL_SRC_FILES := com.google.android.inputmethod.latin.apk
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
-LOCAL_PREBUILT_JNI_LIBS := LatinImeGoogle/lib/arm/libjni_latinimegoogle.so LatinImeGoogle/lib/arm/libjni_keyboarddecoder.so
 LOCAL_OVERRIDES_PACKAGES := LatinIME OpenWnn
 LOCAL_CERTIFICATE := PRESIGNED
 LOCAL_MODULE_OWNER := google
@@ -444,7 +443,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# WebViewGoogle : 47.0.2526.77
+# WebViewGoogle : 47.0.2526.100
 LOCAL_MODULE := WebViewGoogle
 LOCAL_SRC_FILES := com.google.android.webview.apk
 LOCAL_MODULE_CLASS := APPS
