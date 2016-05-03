@@ -1,7 +1,7 @@
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
-# Chrome : 49.0.2623.105
+# Chrome : 50.0.2661.89
 LOCAL_MODULE := Chrome
 LOCAL_SRC_FILES := com.android.chrome.apk
 LOCAL_MODULE_CLASS := APPS
@@ -36,7 +36,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Books : 3.7.75
+# Books : 3.8.15
 LOCAL_MODULE := Books
 LOCAL_SRC_FILES := com.google.android.apps.books.apk
 LOCAL_MODULE_CLASS := APPS
@@ -124,7 +124,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# PrebuiltNewsWeather : 2.5.2 (105241914)
+# PrebuiltNewsWeather : 2.6.7 (120857206)
 LOCAL_MODULE := PrebuiltNewsWeather
 LOCAL_SRC_FILES := com.google.android.apps.genie.geniewidget.apk
 LOCAL_MODULE_CLASS := APPS
@@ -202,7 +202,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Photos : 1.17.0.118258643
+# Photos : 1.18.0.119671374
 LOCAL_MODULE := Photos
 LOCAL_SRC_FILES := com.google.android.apps.photos.apk
 LOCAL_MODULE_CLASS := APPS
@@ -214,7 +214,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# PlusOne : 7.1.0.112998773
+# PlusOne : 7.7.0.120011031
 LOCAL_MODULE := PlusOne
 LOCAL_SRC_FILES := com.google.android.apps.plus.apk
 LOCAL_MODULE_CLASS := APPS
@@ -248,7 +248,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# CalendarGooglePrebuilt : 5.3.8-117343094-release
+# CalendarGooglePrebuilt : 5.5-121019539-release
 LOCAL_MODULE := CalendarGooglePrebuilt
 LOCAL_SRC_FILES := com.google.android.calendar.apk
 LOCAL_MODULE_CLASS := APPS
@@ -283,7 +283,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# PrebuiltGmail : 6.3.117716127.release
+# PrebuiltGmail : 6.4.120760496.release
 LOCAL_MODULE := PrebuiltGmail
 LOCAL_SRC_FILES := com.google.android.gm.apk
 LOCAL_MODULE_CLASS := APPS
@@ -318,7 +318,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# LatinImeGoogle : 4.1.23163.2622203
+# LatinImeGoogle : 5.0.18.121010836-armeabi-v7a
 LOCAL_MODULE := LatinImeGoogle
 LOCAL_SRC_FILES := com.google.android.inputmethod.latin.apk
 LOCAL_MODULE_CLASS := APPS
@@ -330,7 +330,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# PrebuiltKeep : 3.3.072.0
+# PrebuiltKeep : 3.3.157.0
 LOCAL_MODULE := PrebuiltKeep
 LOCAL_SRC_FILES := com.google.android.keep.apk
 LOCAL_MODULE_CLASS := APPS
@@ -353,7 +353,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# talkback : 4.4.1
+# talkback : 4.5.0
 LOCAL_MODULE := talkback
 LOCAL_SRC_FILES := com.google.android.marvin.talkback.apk
 LOCAL_MODULE_CLASS := APPS
@@ -364,7 +364,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Music2 : 6.6.2612Y.2725627
+# Music2 : 6.7.2713Z.2790541
 LOCAL_MODULE := Music2
 LOCAL_SRC_FILES := com.google.android.music.apk
 LOCAL_MODULE_CLASS := APPS
@@ -376,7 +376,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# PlayGames : 3.6.27 (2647216-036)
+# PlayGames : 3.7.22 (2779566-036)
 LOCAL_MODULE := PlayGames
 LOCAL_SRC_FILES := com.google.android.play.games.apk
 LOCAL_MODULE_CLASS := APPS
@@ -421,7 +421,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Videos : 3.9.23
+# Videos : 3.13.10
 LOCAL_MODULE := Videos
 LOCAL_SRC_FILES := com.google.android.videos.apk
 LOCAL_MODULE_CLASS := APPS
@@ -443,7 +443,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# WebViewGoogle : 49.0.2623.105
+# WebViewGoogle : 50.0.2661.86
 LOCAL_MODULE := WebViewGoogle
 LOCAL_SRC_FILES := com.google.android.webview.apk
 LOCAL_MODULE_CLASS := APPS
@@ -456,7 +456,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# YouTube : 11.11.57
+# YouTube : 11.15.55
 LOCAL_MODULE := YouTube
 LOCAL_SRC_FILES := com.google.android.youtube.apk
 LOCAL_MODULE_CLASS := APPS
@@ -778,7 +778,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Phonesky : 6.3.16.B-all [0] 2697688
+# Phonesky : 6.4.20.C-all [0] 2780330
 LOCAL_MODULE := Phonesky
 LOCAL_SRC_FILES := com.android.vending.apk
 LOCAL_MODULE_CLASS := APPS
@@ -826,7 +826,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# GoogleContacts : 1.4.2
+# GoogleContacts : 1.4.9
 LOCAL_MODULE := GoogleContacts
 LOCAL_SRC_FILES := com.google.android.contacts.apk
 LOCAL_MODULE_CLASS := APPS
@@ -839,7 +839,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# GoogleDialer : 2.3.17
+# GoogleDialer : 2.05.07_rc4
 LOCAL_MODULE := GoogleDialer
 LOCAL_SRC_FILES := com.google.android.dialer.apk
 LOCAL_MODULE_CLASS := APPS
@@ -864,7 +864,7 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Velvet : 5.11.33.19.arm
+# Velvet : 5.12.34.21.arm
 LOCAL_MODULE := Velvet
 LOCAL_SRC_FILES := com.google.android.googlequicksearchbox.apk
 LOCAL_MODULE_CLASS := APPS
