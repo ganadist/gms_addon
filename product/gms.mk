@@ -7,7 +7,6 @@ PRODUCT_PACKAGES := \
 	GoogleEars \
 	Newsstand \
 	PrebuiltKeep \
-	KoreanIME \
 	PrebuiltBugle \
 	DeviceAssist \
 	EditorsDocs \
@@ -21,6 +20,7 @@ PRODUCT_PACKAGES := \
 	talkback \
 
 #PRODUCT_PACKAGES += \
+	KoreanIME \
 	GoogleEarth \
 	HangOutDialer \
 	PdfViewer \
