@@ -13,7 +13,6 @@ FACELOCK_DATA := \
 	vendor/pittpatt/models/recognition/face.face.y0-y0-71-N-tree_7-wmd.bin \
 	vendor/lib/libfrsdk.so \
 	lib/libfacelock_jni.so \
-	lib/libfilterpack_facedetect.so \
 
 define facelock-copy-lib
 $(eval PRODUCT_COPY_FILES += $(FACELOCK_DIR)/$(1):$(TARGET_COPY_OUT_SYSTEM)/$(1):google)
