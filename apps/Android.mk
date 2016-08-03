@@ -236,6 +236,17 @@ LOCAL_DEX_PREOPT := false
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
+# WallpaperPickerGooglePrebuilt : wallpaper_20160713_RC00
+LOCAL_MODULE := WallpaperPickerGooglePrebuilt
+LOCAL_SRC_FILES := com.google.android.apps.wallpaper.apk
+LOCAL_MODULE_CLASS := APPS
+LOCAL_MODULE_TAGS := optional
+LOCAL_CERTIFICATE := PRESIGNED
+LOCAL_MODULE_OWNER := google
+LOCAL_DEX_PREOPT := false
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
 # CalculatorGoogle : 6.0 (2715628)
 LOCAL_MODULE := CalculatorGoogle
 LOCAL_SRC_FILES := com.google.android.calculator.apk
@@ -346,7 +357,7 @@ LOCAL_MODULE := GoogleHome
 LOCAL_SRC_FILES := com.google.android.launcher.apk
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
-LOCAL_OVERRIDES_PACKAGES := Launcher2
+LOCAL_OVERRIDES_PACKAGES := Home Launcher2 Launcher3
 LOCAL_CERTIFICATE := PRESIGNED
 LOCAL_MODULE_OWNER := google
 LOCAL_DEX_PREOPT := false
@@ -807,6 +818,20 @@ LOCAL_MODULE := GCS
 LOCAL_SRC_FILES := com.google.android.apps.gcs.apk
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
+LOCAL_CERTIFICATE := PRESIGNED
+LOCAL_PRIVILEGED_MODULE := true
+LOCAL_MODULE_OWNER := google
+LOCAL_DEX_PREOPT := false
+include $(BUILD_PREBUILT)
+
+include $(CLEAR_VARS)
+# NexusLauncherPrebuilt.apk : NMR1-3063178
+LOCAL_MODULE := NexusLauncherPrebuilt.apk
+LOCAL_SRC_FILES := com.google.android.apps.nexuslauncher.apk
+LOCAL_MODULE_CLASS := APPS
+LOCAL_MODULE_TAGS := optional
+LOCAL_OVERRIDES_PACKAGES := Home Launcher2 Launcher3 GoogleHome
+LOCAL_REQUIRED_MODULES := WallpaperPickerGooglePrebuilt
 LOCAL_CERTIFICATE := PRESIGNED
 LOCAL_PRIVILEGED_MODULE := true
 LOCAL_MODULE_OWNER := google

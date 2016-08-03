@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-import os, glob
-import subprocess
+import sys, os, glob
 import shutil
 import zipfile
+from lib.apk import get_apk_info
 
 for E in ('TOP', 'ANDROID_BUILD_TOP'):
     top = os.getenv(E)
@@ -11,8 +11,6 @@ for E in ('TOP', 'ANDROID_BUILD_TOP'):
 else:
     assert False
 STUBS_PREFIX = 'stubs'
-dst = os.path.join(top, 'vendor/google/apps')
-STUBS = os.path.join(dst, STUBS_PREFIX)
 
 def stub(fn):
     return os.path.join(STUBS_PREFIX, fn)
@@ -61,7 +59,9 @@ packages = (
             'Galaxy4', 'HoloSpiralWallpaper', 'NoiseField', 'PhaseBeam')),
 	('com.google.android.apps.plus.apk', 'PlusOne'),
     ('com.google.android.apps.translate.apk', 'Translate'),
-    ('com.google.android.calculator.apk', 'CalculatorGoogle', 'Calculator'),
+    ('com.google.android.apps.wallpaper.apk', 'WallpaperPickerGooglePrebuilt'),
+    ('com.google.android.calculator.apk', 'CalculatorGoogle', ('Calculator',
+        'ExactCalculator')),
 	('com.google.android.calendar.apk', 'CalendarGooglePrebuilt', 'Calendar'),
 	('com.google.android.deskclock.apk', 'PrebuiltDeskClockGoogle',
         'DeskClock'),
@@ -73,7 +73,7 @@ packages = (
 	('com.google.android.inputmethod.latin.apk', 'LatinImeGoogle',
         ('LatinIME', 'OpenWnn',) ),
 	('com.google.android.keep.apk', 'PrebuiltKeep',),
-	('com.google.android.launcher.apk', 'GoogleHome', 'Launcher2'),
+	('com.google.android.launcher.apk', 'GoogleHome', ('Home', 'Launcher2', 'Launcher3')),
 	('com.google.android.marvin.talkback.apk', 'talkback'),
 	('com.google.android.music.apk', 'Music2', 'Music',),
 	('com.google.android.play.games.apk', 'PlayGames',),
@@ -110,13 +110,27 @@ packages = (
 	(stub('com.google.android.videos.apk'), 'VideosStub', 'Videos'),
 	(stub('com.google.android.youtube.apk'), 'YouTubeStub', 'YouTube'),
 	(stub('com.google.android.talk.apk'), 'HangoutsStub','Hangouts',),
-
+	(stub('com.google.android.calendar.apk'),
+            'CalendarGooglePrebuiltStub','CalendarGooglePrebuilt',),
+	(stub('com.google.android.music.apk'), 'Music2Stub','Music2',),
+	(stub('com.google.android.apps.photos.apk'), 'PhotosStub','Photos',),
+	(stub('com.android.chrome.apk'), 'ChromeStub','Chrome',),
+	(stub('com.google.android.GoogleCamera.apk'),
+            'GoogleCameraStub','GoogleCamera',),
+	(stub('com.google.android.play.games.apk'), 'PlayGamesStub','PlayGames',),
+	(stub('com.google.android.apps.cavalry.apk'), 'DeviceAssistStub', 'DeviceAssist'),
+	(stub('com.google.android.deskclock.apk'), 'PrebuiltDeskClockGoogleStub',
+        'PrebuiltDeskClockGoogle'),
+	(stub('com.google.android.gm.apk'), 'PrebuiltGmailStub', 'PrebuiltGmail'),
 )
 
 privileged_packages = (
 	('com.android.vending.apk', 'Phonesky', ),
 	('com.google.android.androidforwork.apk', 'AndroidForWork', ),
 	('com.google.android.apps.gcs.apk', 'GCS', ),
+    ('com.google.android.apps.nexuslauncher.apk', 'NexusLauncherPrebuilt.apk',
+        ('Home', 'Launcher2', 'Launcher3', 'GoogleHome'),
+        ('WallpaperPickerGooglePrebuilt', )),
 	('com.google.android.configupdater.apk', 'ConfigUpdater', ),
 	('com.google.android.contacts.apk', 'GoogleContacts', 'Contacts', ),
 	('com.google.android.dialer.apk', 'GoogleDialer', 'Dialer', ),
@@ -134,31 +148,14 @@ privileged_packages = (
 	('com.google.android.setupwizard.apk', 'SetupWizard', 'Provision', ),
 	('com.google.android.tag.apk', 'TagGoogle', 'Tag', ),
 	('com.google.android.backuptransport.apk', 'GoogleBackupTransport',),
+    ('com.google.android.nfcprovision.apk', 'NfcProvision', ),
 )
 
 def system(cmd):
     return os.system("bash -c '%s' > /dev/null"%cmd)
 
-def get_apk_info(filename):
-    cmd = 'aapt', 'd', 'badging', filename
-    attrs = {}
-    with subprocess.Popen(cmd, stdout=subprocess.PIPE) as proc:
-        for line in proc.stdout:
-            line = line[:-1]
-            line = line.decode('utf-8')
-            if line.startswith('package: '):
-                line = line.split(None, 1)[1]
-                line = line.strip()
-                while line:
-                    k, line = line.split('=', 1)
-                    _, line = line.split("'", 1)
-                    v, line = line.split("'", 1)
-                    attrs[k] = v
-                    line = line.strip()
-                break
-    return attrs
 
-def generate_package(info, privileged):
+def parse_info(info):
     if len(info) == 2:
         filename, package = info
         override = None
@@ -185,22 +182,28 @@ def generate_package(info, privileged):
             pass
         else:
             assert False
+    return filename, package, override, deps
 
-    yield 'include $(CLEAR_VARS)'
 
+def generate_package(info, dst, privileged):
+    filename, package, override, deps = parse_info(info)
     dstfile = os.path.join(dst, filename)
 
     # for stub packages
     if filename.startswith(STUBS_PREFIX) and not os.path.exists(STUBS):
         os.makedirs(STUBS)
 
-    for dpi in ('320', 'nodpi'):
+    #for dpi in ('240', 'nodpi', '.'):
+    for dpi in ('320', 'nodpi', '.'):
         f = os.path.join(dpi, filename)
         if os.path.isfile(f):
             srcfile = f
             break
     else:
-        srcfile = filename
+        print('%s file is not exist, skip it'%filename, file = sys.stderr)
+        return
+
+    yield 'include $(CLEAR_VARS)'
 
     attrs = get_apk_info(srcfile)
     yield '# %s : %s'%(package, attrs['versionName'])
@@ -213,6 +216,7 @@ def generate_package(info, privileged):
     jnis = []
     shutil.copyfile(srcfile, dstfile)
 
+    #if package == 'LatinImeGoogle':
     if 0 and system('unzip -t %s "lib/*.so"'%(dstfile)) == 0:
         jni_path = os.path.join(dst, package)
         system('rm -rf %s'%jni_path)
@@ -252,9 +256,26 @@ def generate_package(info, privileged):
     yield 'include $(BUILD_PREBUILT)'
     yield ''
 
+if __name__ == '__main__':
 
-print('LOCAL_PATH := $(call my-dir)\n')
-for p in packages:
-    print('\n'.join(generate_package(p, False)))
-for p in privileged_packages:
-    print('\n'.join(generate_package(p, True)))
+    if len(sys.argv) == 1:
+        outfile = os.readlink('/proc/self/fd/1')
+        if outfile.startswith('/dev/pts'):
+            dst = os.path.join(top, 'vendor/google/apps')
+            out = open(os.path.join(dst, 'Android.mk'), 'w')
+        else:
+            out = sys.stdout
+            dst = os.path.dirname(outfile)
+    elif len(sys.argv) == 2:
+        outfile = sys.argv[1]
+        out = open(outfile, 'w')
+        dst = os.path.dirname(outfile)
+    else:
+        assert False
+
+    STUBS = os.path.join(dst, STUBS_PREFIX)
+    print('LOCAL_PATH := $(call my-dir)\n', file = out)
+    for p in packages:
+        print('\n'.join(generate_package(p, dst, False)), file = out)
+    for p in privileged_packages:
+        print('\n'.join(generate_package(p, dst, True)), file = out)
