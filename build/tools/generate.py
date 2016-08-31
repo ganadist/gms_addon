@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
+# vim: ts=4 sw=4 nocindent expandtab
+
 import sys, os, glob
 import shutil
+import collections
 import zipfile
 from lib.apk import get_apk_info
 
@@ -10,161 +13,131 @@ for E in ('TOP', 'ANDROID_BUILD_TOP'):
         break
 else:
     assert False
+
 STUBS_PREFIX = 'stubs'
 
-def stub(fn):
-    return os.path.join(STUBS_PREFIX, fn)
-
-need_to_odex = (
-    'GoogleContactsSyncAdapter',
-    'LatinImeGoogle',
-    'GoogleTTS',
-    'CalculatorGoogle',
-    'GoogleEars',
-    'GoogleContacts',
-    'GooglePackageInstaller',
-    'SetupWizard',
-    'GoogleOneTimeInitializer',
-    'GooglePartnerSetup',
-    'TagGoogle',
-    'GoogleLoginService',
-    'GoogleBackupTransport',
-    'GoogleDialer',
-    'AndroidForWork',
-    'ConfigUpdater',
-    'GoogleFeedback',
-)
-
-packages = (
-    ('com.android.chrome.apk', 'Chrome', 'Browser'),
-    ('com.android.facelock.apk', 'FaceLock', ),
-	('com.google.android.GoogleCamera.apk', 'GoogleCamera', 'Camera2'),
-	('com.google.android.apps.books.apk', 'Books'),
-	('com.google.android.apps.cavalry.apk', 'DeviceAssist'),
-	('com.google.android.apps.cloudprint.apk', 'CloudPrint2'),
-	('com.google.android.apps.docs.apk', 'Drive'),
-	('com.google.android.apps.docs.editors.docs.apk', 'EditorsDocs'),
-	('com.google.android.apps.docs.editors.sheets.apk', 'EditorsSheets'),
-	('com.google.android.apps.docs.editors.slides.apk', 'EditorsSlides'),
-	('com.google.android.apps.fitness.apk', 'FitnessPrebuilt'),
-	('com.google.android.apps.genie.geniewidget.apk', 'PrebuiltNewsWeather',),
-    ('com.google.android.apps.gmoney.apk', 'Pay',),
-	('com.google.android.apps.hangoutsdialer.apk', 'HangOutDialer'),
-	('com.google.android.apps.magazines.apk', 'Newsstand'),
-	('com.google.android.apps.maps.apk', 'Maps'),
-	('com.google.android.apps.messaging.apk', 'PrebuiltBugle', 'messaging'),
-	('com.google.android.apps.pdfviewer.apk', 'PdfViewer'),
-	('com.google.android.apps.photos.apk', 'Photos',
+PACKAGES = (
+    ('com.android.chrome', 'Chrome', ('Browser', 'Browser2'),),
+    ('com.android.facelock', 'FaceLock', ),
+    ('com.google.android.GoogleCamera', 'GoogleCamera', 'Camera2'),
+    ('com.google.android.apps.books', 'Books'),
+    ('com.google.android.apps.cavalry', 'DeviceAssist'),
+    ('com.google.android.apps.cloudprint', 'CloudPrint2'),
+    ('com.google.android.apps.docs', 'Drive'),
+    ('com.google.android.apps.docs.editors.docs', 'EditorsDocs'),
+    ('com.google.android.apps.docs.editors.sheets', 'EditorsSheets'),
+    ('com.google.android.apps.docs.editors.slides', 'EditorsSlides'),
+    ('com.google.android.apps.fitness', 'FitnessPrebuilt'),
+    ('com.google.android.apps.genie.geniewidget', 'PrebuiltNewsWeather',),
+    ('com.google.android.apps.gmoney', 'Pay',),
+    ('com.google.android.apps.hangoutsdialer', 'HangOutDialer'),
+    ('com.google.android.apps.magazines', 'Newsstand'),
+    ('com.google.android.apps.maps', 'Maps'),
+    ('com.google.android.apps.messaging', 'PrebuiltBugle', 'messaging'),
+    ('com.google.android.apps.pdfviewer', 'PdfViewer'),
+    ('com.google.android.apps.photos', 'Photos',
         ('VisualizationWallpapers', 'Gallery2', 'PhotoTable', 'LiveWallpapers',
             'Galaxy4', 'HoloSpiralWallpaper', 'NoiseField', 'PhaseBeam')),
-	('com.google.android.apps.plus.apk', 'PlusOne'),
-    ('com.google.android.apps.translate.apk', 'Translate'),
-    ('com.google.android.apps.wallpaper.apk', 'WallpaperPickerGooglePrebuilt'),
-    ('com.google.android.calculator.apk', 'CalculatorGoogle', ('Calculator',
+    ('com.google.android.apps.plus', 'PlusOne'),
+    ('com.google.android.apps.translate', 'Translate'),
+    ('com.google.android.apps.walletnfcrel', 'Wallet',),
+    ('com.google.android.apps.wallpaper', 'WallpaperPickerGooglePrebuilt'),
+    ('com.google.android.calculator', 'CalculatorGoogle', ('Calculator',
         'ExactCalculator')),
-	('com.google.android.calendar.apk', 'CalendarGooglePrebuilt', 'Calendar'),
-	('com.google.android.deskclock.apk', 'PrebuiltDeskClockGoogle',
+    ('com.google.android.calendar', 'CalendarGooglePrebuilt', 'Calendar'),
+    ('com.google.android.deskclock', 'PrebuiltDeskClockGoogle',
         'DeskClock'),
-	('com.google.android.ears.apk', 'GoogleEars'),
-	('com.google.android.gm.apk', 'PrebuiltGmail', 'Email'),
-	('com.google.android.gm.exchange.apk', 'PrebuiltExchange3Google',
-    'Exchange2'),
-	('com.google.android.inputmethod.korean.apk', 'KoreanIME',),
-	('com.google.android.inputmethod.latin.apk', 'LatinImeGoogle',
+    ('com.google.android.ears', 'GoogleEars'),
+    ('com.google.android.ext.shared', 'GoogleExtShared', 'ExtShared'),
+    ('com.google.android.gm', 'PrebuiltGmail', 'Email'),
+    ('com.google.android.gm.exchange', 'PrebuiltExchange3Google', 'Exchange2'),
+    ('com.google.android.inputmethod.korean', 'KoreanIME',),
+    ('com.google.android.inputmethod.latin', 'LatinImeGoogle',
         ('LatinIME', 'OpenWnn',) ),
-	('com.google.android.keep.apk', 'PrebuiltKeep',),
-	('com.google.android.launcher.apk', 'GoogleHome', ('Home', 'Launcher2', 'Launcher3')),
-	('com.google.android.marvin.talkback.apk', 'talkback'),
-	('com.google.android.music.apk', 'Music2', 'Music',),
-	('com.google.android.play.games.apk', 'PlayGames',),
-	('com.google.android.syncadapters.contacts.apk',
-    'GoogleContactsSyncAdapter',),
-	('com.google.android.talk.apk', 'Hangouts',),
-	('com.google.android.tts.apk', 'GoogleTTS', 'PicoTts'),
-	('com.google.android.videos.apk', 'Videos',),
-    ('com.google.android.apps.walletnfcrel.apk', 'Wallet',),
-	('com.google.android.webview.apk', 'WebViewGoogle', 'webview',
+    ('com.google.android.keep', 'PrebuiltKeep',),
+    ('com.google.android.launcher', 'GoogleHome', ('Home', 'Launcher2', 'Launcher3')),
+    ('com.google.android.marvin.talkback', 'talkback'),
+    ('com.google.android.music', 'Music2', 'Music',),
+    ('com.google.android.play.games', 'PlayGames',),
+    ('com.google.android.printservice.recommendation',
+                'GooglePrintRecommendationService',
+                'PrintRecommendationService'),
+    ('com.google.android.syncadapters.contacts', 'GoogleContactsSyncAdapter',),
+    ('com.google.android.talk', 'Hangouts',),
+    ('com.google.android.tts', 'GoogleTTS', 'PicoTts'),
+    ('com.google.android.videos', 'Videos',),
+    ('com.google.android.webview', 'WebViewGoogle', 'webview',
         ('libwebviewchromium_loader', 'libwebviewchromium_plat_support'),),
-	('com.google.android.youtube.apk', 'YouTube'),
-    ('com.google.earth.apk', 'GoogleEarth'),
+    ('com.google.android.youtube', 'YouTube'),
+    ('com.google.earth', 'GoogleEarth'),
 
-	(stub('com.google.android.apps.docs.editors.docs.apk'), 'EditorsDocsStub',
-            'EditorsDocs'),
-	(stub('com.google.android.apps.docs.editors.sheets.apk'),
-            'EditorsSheetsStub', 'EditorsSheets'),
-	(stub('com.google.android.apps.docs.editors.slides.apk'),
-            'EditorsSlidesStub', 'EditorsSlides'),
-	(stub('com.google.android.apps.magazines.apk'), 'NewsstandStub',
-            'Newsstand'),
-	(stub('com.google.android.apps.messaging.apk'), 'PrebuiltBugleStub',
-            'PrebuiltBugle'),
-    (stub('com.google.android.keep.apk'), 'PrebuiltKeepStub', 'PrebuiltKeep'),
-	(stub('com.google.android.apps.books.apk'), 'BooksStub', 'Books'),
-	(stub('com.google.android.apps.cloudprint.apk'), 'CloudPrint2Stub', 'CloudPrint2'),
-	(stub('com.google.android.apps.docs.apk'), 'DriveStub', 'Drive'),
-	(stub('com.google.android.apps.fitness.apk'), 'FitnessPrebuiltStub',
-            'FitnessPrebuilt'),
-	(stub('com.google.android.apps.maps.apk'), 'MapsStub', 'Maps'),
-	(stub('com.google.android.apps.plus.apk'), 'PlusOneStub', 'PlusOne'),
-	(stub('com.google.android.apps.translate.apk'), 'TranslateStub', 'Translate'),
-	(stub('com.google.android.videos.apk'), 'VideosStub', 'Videos'),
-	(stub('com.google.android.youtube.apk'), 'YouTubeStub', 'YouTube'),
-	(stub('com.google.android.talk.apk'), 'HangoutsStub','Hangouts',),
-	(stub('com.google.android.calendar.apk'),
-            'CalendarGooglePrebuiltStub','CalendarGooglePrebuilt',),
-	(stub('com.google.android.music.apk'), 'Music2Stub','Music2',),
-	(stub('com.google.android.apps.photos.apk'), 'PhotosStub','Photos',),
-	(stub('com.android.chrome.apk'), 'ChromeStub','Chrome',),
-	(stub('com.google.android.GoogleCamera.apk'),
-            'GoogleCameraStub','GoogleCamera',),
-	(stub('com.google.android.play.games.apk'), 'PlayGamesStub','PlayGames',),
-	(stub('com.google.android.apps.cavalry.apk'), 'DeviceAssistStub', 'DeviceAssist'),
-	(stub('com.google.android.deskclock.apk'), 'PrebuiltDeskClockGoogleStub',
-        'PrebuiltDeskClockGoogle'),
-	(stub('com.google.android.gm.apk'), 'PrebuiltGmailStub', 'PrebuiltGmail'),
 )
 
-privileged_packages = (
-	('com.android.vending.apk', 'Phonesky', ),
-	('com.google.android.androidforwork.apk', 'AndroidForWork', ),
-	('com.google.android.apps.gcs.apk', 'GCS', ),
-    ('com.google.android.apps.nexuslauncher.apk', 'NexusLauncherPrebuilt.apk',
+PRIVILEGED_PACKAGES = (
+    ('com.android.vending', 'Phonesky', ),
+    ('com.google.android.androidforwork', 'AndroidForWork', ),
+    ('com.google.android.apps.gcs', 'GCS', ),
+    ('com.google.android.apps.nexuslauncher', 'NexusLauncherPrebuilt',
         ('Home', 'Launcher2', 'Launcher3', 'GoogleHome'),
         ('WallpaperPickerGooglePrebuilt', )),
-	('com.google.android.configupdater.apk', 'ConfigUpdater', ),
-	('com.google.android.contacts.apk', 'GoogleContacts', 'Contacts', ),
-	('com.google.android.dialer.apk', 'GoogleDialer', 'Dialer', ),
-	('com.google.android.feedback.apk', 'GoogleFeedback', ),
-	('com.google.android.googlequicksearchbox.apk', 'Velvet', 'QuickSearchBox',
-        ),
-    ('com.google.android.gms.apk', 'PrebuiltGmsCore', 'WAPPushManager'),
-	('com.google.android.gsf.apk', 'GoogleServicesFramework', ),
-	('com.google.android.gsf.login.apk', 'GoogleLoginService', ),
-	('com.google.android.onetimeinitializer.apk', 'GoogleOneTimeInitializer',
+    ('com.google.android.backuptransport', 'GoogleBackupTransport',),
+    ('com.google.android.configupdater', 'ConfigUpdater', ),
+    ('com.google.android.contacts', 'GoogleContacts', 'Contacts', ),
+    ('com.google.android.dialer', 'GoogleDialer', 'Dialer', ),
+    ('com.google.android.ext.services', 'GoogleExtServices', 'ExtServices', ),
+    ('com.google.android.feedback', 'GoogleFeedback', ),
+    ('com.google.android.gms', 'PrebuiltGmsCore', 'WAPPushManager'),
+    ('com.google.android.googlequicksearchbox', 'Velvet', 'QuickSearchBox', ),
+    ('com.google.android.gsf', 'GoogleServicesFramework', ),
+    ('com.google.android.gsf.login', 'GoogleLoginService', ),
+    ('com.google.android.nfcprovision', 'NfcProvision', ),
+    ('com.google.android.onetimeinitializer', 'GoogleOneTimeInitializer',
         'OneTimeInitializer', ),
-	('com.google.android.packageinstaller.apk', 'GooglePackageInstaller',
+    ('com.google.android.packageinstaller', 'GooglePackageInstaller',
         'PackageInstaller', ),
-	('com.google.android.partnersetup.apk', 'GooglePartnerSetup', ),
-	('com.google.android.setupwizard.apk', 'SetupWizard', 'Provision', ),
-	('com.google.android.tag.apk', 'TagGoogle', 'Tag', ),
-	('com.google.android.backuptransport.apk', 'GoogleBackupTransport',),
-    ('com.google.android.nfcprovision.apk', 'NfcProvision', ),
+    ('com.google.android.partnersetup', 'GooglePartnerSetup', ),
+    ('com.google.android.setupwizard', 'SetupWizard', 'Provision', ),
+    ('com.google.android.tag', 'TagGoogle', 'Tag', ),
 )
 
-def system(cmd):
-    return os.system("bash -c '%s' > /dev/null"%cmd)
-
+STUBS = (
+    'EditorsDocs',
+    'EditorsSheets',
+    'EditorsSlides',
+    'Newsstand',
+    'PrebuiltBugle',
+    'PrebuiltKeep',
+    'Books',
+    'CloudPrint2',
+    'Drive',
+    'FitnessPrebuilt',
+    'PrebuiltNewsWeather',
+    'Maps',
+    'PlusOne',
+    'Translate',
+    'Videos',
+    'YouTube',
+    'Hangouts',
+    'CalendarGooglePrebuilt',
+    'Music2',
+    'Photos',
+    'GoogleCamera',
+    'PlayGames',
+    'DeviceAssist',
+    'PrebuiltDeskClockGoogle',
+    'WebViewGoogle',
+)
 
 def parse_info(info):
     if len(info) == 2:
-        filename, package = info
-        override = None
-        deps = None
+        pkg, name, = info
+        override = ()
+        deps = ()
     elif len(info) == 3:
-        filename, package, override = info
-        deps = None
+        pkg, name, override = info
+        deps = ()
     elif len(info) == 4:
-        filename, package, override, deps = info
+        pkg, name, override, deps = info
     else:
         assert False
     if override:
@@ -182,79 +155,123 @@ def parse_info(info):
             pass
         else:
             assert False
-    return filename, package, override, deps
+    return name, (pkg, override, deps)
+
+class Module(object):
+    def __init__(self, name, *args):
+        self.parse(name, *args)
+
+    def parse(self, name, *args):
+        self.name = name
+        self.pkg, self.override, self.deps = args
+
+    def collect_files(self):
+        self.files = glob.glob(self.pkg + ".apk")
+        self.files += glob.glob(self.pkg + "_*")
+
+    def get_abis(self):
+        abis = map(lambda x: x['abi'], self.attrs.values())
+        return set(filter(lambda x: x != '', abis))
+
+    def get_dpis(self):
+        dpis = map(lambda x: x['dpi'], self.attrs.values())
+        return set(filter(lambda x: x != '', dpis))
+
+    def print_android_mk_body(self):
+        self.attrs = dict(map(lambda x: (x, get_apk_info(x)), self.files))
+        yield '# %s : %s'%(self.name, list(self.attrs.values())[0]['versionName'])
 
 
-def generate_package(info, dst, privileged):
-    filename, package, override, deps = parse_info(info)
-    dstfile = os.path.join(dst, filename)
+        yield "LOCAL_MODULE := " + self.name
+        yield "LOCAL_MODULE_CLASS := APPS"
+        yield "LOCAL_MODULE_TAGS := optional"
+        yield "LOCAL_BUILT_MODULE_STEM := package.apk"
+        yield "LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)"
 
-    # for stub packages
-    if filename.startswith(STUBS_PREFIX) and not os.path.exists(STUBS):
-        os.makedirs(STUBS)
+        if self.override:
+            yield 'LOCAL_OVERRIDES_PACKAGES := ' + ' '.join(self.override)
 
-    #for dpi in ('240', 'nodpi', '.'):
-    for dpi in ('320', 'nodpi', '.'):
-        f = os.path.join(dpi, filename)
-        if os.path.isfile(f):
-            srcfile = f
-            break
-    else:
-        print('%s file is not exist, skip it'%filename, file = sys.stderr)
-        return
+        if self.deps:
+            yield 'LOCAL_REQUIRED_MODULES := ' + ' '.join(self.deps)
 
-    yield 'include $(CLEAR_VARS)'
-
-    attrs = get_apk_info(srcfile)
-    yield '# %s : %s'%(package, attrs['versionName'])
-
-    yield 'LOCAL_MODULE := %s'%package
-    yield 'LOCAL_SRC_FILES := %s'%filename
-    yield 'LOCAL_MODULE_CLASS := APPS'
-    yield 'LOCAL_MODULE_TAGS := optional'
-
-    jnis = []
-    shutil.copyfile(srcfile, dstfile)
-
-    #if package == 'LatinImeGoogle':
-    if 0 and system('unzip -t %s "lib/*.so"'%(dstfile)) == 0:
-        jni_path = os.path.join(dst, package)
-        system('rm -rf %s'%jni_path)
-        system('unzip -x %s "lib/*.so" -d %s'%(srcfile, jni_path))
-        target_abi = os.path.join(jni_path, 'lib', 'arm')
-        for abi in ('armeabi-v7a', 'armeabi'):
-            abidir = os.path.join(jni_path, 'lib', abi)
-            if os.path.isdir(abidir):
-                os.rename(abidir, target_abi)
-
-        with zipfile.ZipFile(srcfile) as zin:
-            with zipfile.ZipFile(dstfile, 'w') as zout:
-                for f in zin.infolist():
-                    if not f.filename.startswith('lib/'):
-                        buffer = zin.read(f.filename)
-                        zout.writestr(f, buffer)
-        jnis = map(lambda x: x[len(dst) + 1:], glob.glob(target_abi + '/*'))
-
-    if jnis:
-        yield 'LOCAL_PREBUILT_JNI_LIBS := %s'%(' '.join(jnis))
-
-    if override:
-        yield 'LOCAL_OVERRIDES_PACKAGES := %s'%(' '.join(override))
-    if deps:
-        yield 'LOCAL_REQUIRED_MODULES := %s'%(' '.join(deps))
-
-    yield 'LOCAL_CERTIFICATE := PRESIGNED'
-    if privileged:
-        yield 'LOCAL_PRIVILEGED_MODULE := true'
-    yield 'LOCAL_MODULE_OWNER := google'
-
-    if 0 and package in need_to_odex:
-        yield 'LOCAL_DEX_PREOPT := true'
-    else:
+        yield "LOCAL_CERTIFICATE := PRESIGNED"
+        yield 'LOCAL_MODULE_OWNER := google'
         yield 'LOCAL_DEX_PREOPT := false'
 
-    yield 'include $(BUILD_PREBUILT)'
-    yield ''
+        abis = self.get_abis()
+        dpis = self.get_dpis()
+
+        if dpis:
+            yield 'LOCAL_DPI_VARIANTS := ' + ' '.join(dpis)
+
+        if abis:
+            yield 'my_archs := ' + ' '.join(abis)
+            yield 'my_src_arch := $(call get-prebuilt-src-arch, $(my_archs))'
+            yield 'ifeq ($(my_src_arch),arm64)'
+            yield 'LOCAL_MULTILIB := both'
+            yield 'else ifeq ($(my_src_arch),x86_64)'
+            yield 'LOCAL_MULTILIB := both'
+            yield 'endif'
+            if dpis:
+                yield "LOCAL_DPI_FILE_STEM := $(LOCAL_MODULE)_$(my_src_arch)_%.apk"
+            yield "LOCAL_SRC_FILES := $(LOCAL_MODULE)_$(my_src_arch).apk"
+            yield "LOCAL_MODULE_TARGET_ARCH := $(my_src_arch)"
+        elif dpis:
+            yield "LOCAL_DPI_FILE_STEM := $(LOCAL_MODULE)_%.apk"
+            yield "LOCAL_SRC_FILES := $(LOCAL_MODULE).apk"
+        else:
+            yield "LOCAL_SRC_FILES := $(LOCAL_MODULE).apk"
+
+    def print_android_mk(self):
+        self.collect_files()
+        if not self.files:
+            print('WARN: no files for {}'.format(self.name), file = sys.stderr)
+            return
+
+        yield 'include $(CLEAR_VARS)'
+        for line in self.print_android_mk_body():
+            yield line
+        yield 'include $(BUILD_PREBUILT)'
+        yield ''
+
+    def copy(self, destdir):
+        if not self.files:
+            print('WARN: no files for {}'.format(self.name), file = sys.stderr)
+            return
+
+        for filename, attrs in self.attrs.items():
+            src = filename
+            dest = self.name
+            for k in ('abi', 'dpi'):
+                if attrs[k]:
+                    dest += '_' + attrs[k]
+            dest += '.apk'
+            shutil.copy(filename, os.path.join(destdir, dest))
+
+class PrivilegedModule(Module):
+    def print_android_mk_body(self):
+        for line in super().print_android_mk_body():
+            yield line
+        yield 'LOCAL_PRIVILEGED_MODULE := true'
+
+class StubModule(Module):
+    def parse(self, name, parent):
+        self.name = name + 'Stub'
+        self.pkg = parent.pkg
+        self.override = parent.override + (name, )
+        self.deps = parent.deps
+
+    def collect_files(self):
+        self.files = []
+        filename = os.path.join(STUBS_PREFIX, self.pkg + '.apk')
+        if os.path.exists(filename):
+            self.files.append(filename)
+
+    def get_abis(self):
+        pass
+
+    def get_dpis(self):
+        pass
 
 if __name__ == '__main__':
 
@@ -273,9 +290,21 @@ if __name__ == '__main__':
     else:
         assert False
 
-    STUBS = os.path.join(dst, STUBS_PREFIX)
+    packages = collections.OrderedDict()
+    for info in PACKAGES:
+        p, args = parse_info(info)
+        packages[p] = Module(p, *args)
+
+    for p in STUBS:
+        s = StubModule(p, packages[p])
+        packages[s.name] = s
+
+    for info  in PRIVILEGED_PACKAGES:
+        p, args = parse_info(info)
+        packages[p] = PrivilegedModule(p, *args)
+
     print('LOCAL_PATH := $(call my-dir)\n', file = out)
-    for p in packages:
-        print('\n'.join(generate_package(p, dst, False)), file = out)
-    for p in privileged_packages:
-        print('\n'.join(generate_package(p, dst, True)), file = out)
+    for p in packages.values():
+        print('\n'.join(p.print_android_mk()), file = out)
+        p.copy(dst)
+
