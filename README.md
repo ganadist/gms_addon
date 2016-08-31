@@ -3,5 +3,5 @@ gms_addon
 Intro
 -----
 
-android gms addon for Marshmallow 6.0
+android gms addon for Nougat 7.0
 
