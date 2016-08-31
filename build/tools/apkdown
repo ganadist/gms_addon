@@ -1,33 +1,34 @@
 #!/usr/bin/python3
 import os
 import subprocess
+from lib.apk import get_apk_info
+from lib.apk import ApkName
 
 def down(url):
-    TEMP_FILENAME = "down.test"
-    os.system("wget -O '%s' '%s'"%(TEMP_FILENAME, url))
-    return TEMP_FILENAME
+    filename = os.path.basename(url)
+    with ApkName(filename) as tempname:
+        os.system("wget -O '%s' '%s'"%(tempname, url))
+    return filename
 
 def apk_rename(filename):
-    cmd = 'aapt', 'd', 'badging', filename
-    attrs = {}
-    with subprocess.Popen(cmd, stdout=subprocess.PIPE) as proc:
-        for line in proc.stdout:
-            line = line[:-1]
-            line = line.decode('utf-8')
-            if line.startswith('package: '):
-                line = line.split(None, 1)[1]
-                line = line.strip()
-                while line:
-                    k, line = line.split('=', 1)
-                    _, line = line.split("'", 1)
-                    v, line = line.split("'", 1)
-                    attrs[k] = v
-                    line = line.strip()
-                break
-    newname = attrs['name'] + '.apk'
+    attrs = get_apk_info(filename)
+    newname = attrs['name']
+
+    if attrs.get('abi'):
+        newname += '_' + attrs['abi']
+    if attrs.get('dpi'):
+        newname += '_' + attrs['dpi']
+
+    newname += '.apk'
     if filename != newname:
+        ver = 'versionCode'
         print('rename %s => %s'%(filename, newname))
         if os.access(newname, os.F_OK):
+            old_attrs = get_apk_info(newname)
+            if attrs[ver] < old_attrs[ver]:
+                print ('old version({}) is newer than {}'.format(
+                    old_attr[ver], attrs[ver]))
+                return
             os.unlink(newname)
         os.rename(filename, newname)
 
