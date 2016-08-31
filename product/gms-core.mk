@@ -8,7 +8,7 @@ PRODUCT_PACKAGES += \
 	Phonesky \
 	ConfigUpdater \
 	Velvet \
-	PrebuiltGmsCore \
+	GmsCore \
 	GoogleServicesFramework \
 	GoogleLoginService \
 	GoogleOneTimeInitializer \

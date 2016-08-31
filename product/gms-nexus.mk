@@ -3,10 +3,10 @@ PRODUCT_PACKAGES := \
 	GoogleCamera \
 	Photos \
 	CalculatorGoogle \
-	CalendarGooglePrebuilt \
-	PrebuiltDeskClockGoogle \
-	PrebuiltGmail \
-	PrebuiltExchange3Google \
+	CalendarGoogle \
+	DeskClockGoogle \
+	Gmail2 \
+	Exchange3Google \
 	LatinImeGoogle \
 	GoogleHome \
 	Music2 \

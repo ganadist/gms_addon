@@ -1,23 +1,23 @@
 PRODUCT_PACKAGES := \
 	Books \
-	CloudPrint2 \
-	Drive \
-	PlusOne \
-	FitnessPrebuilt \
-	GoogleEars \
-	Newsstand \
-	PrebuiltKeep \
-	PrebuiltBugle \
+	CloudPrint \
 	DeviceAssist \
+	Drive \
 	EditorsDocs \
 	EditorsSheets \
 	EditorsSlides \
+	Fit \
+	GoogleEars \
+	Keep \
+	Messenger \
+	Newsstand \
+	NewsWeather \
 	PlayGames \
-	PrebuiltNewsWeather \
+	PlusOne \
+	talkback \
 	Translate \
 	Videos \
 	YouTube \
-	talkback \
 
 #PRODUCT_PACKAGES += \
 	KoreanIME \
