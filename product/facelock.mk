@@ -1,18 +1,8 @@
 FACELOCK_DIR := vendor/google/lib/facelock
 
 FACELOCK_DATA := \
-	vendor/pittpatt/models/detection/yaw_roll_face_detectors.7.1/pose-y-r.8.1.bin \
-	vendor/pittpatt/models/detection/yaw_roll_face_detectors.7.1/head-y0-yi45-p0-pi45-rn30-ri30.5-v24-tree7-2-wmd.bin \
-	vendor/pittpatt/models/detection/yaw_roll_face_detectors.7.1/head-y0-yi45-p0-pi45-r0-ri30.4a-v24-tree7-2-wmd.bin \
-	vendor/pittpatt/models/detection/yaw_roll_face_detectors.7.1/head-y0-yi45-p0-pi45-rp30-ri30.5-v24-tree7-2-wmd.bin \
-	vendor/pittpatt/models/detection/yaw_roll_face_detectors.7.1/pose-r.8.1.bin \
-	vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.8/right_eye-y0-yi45-p0-pi45-r0-ri20.lg_32-3-tree7-wmd.bin \
-	vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.8/landmark_group_meta_data.bin \
-	vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.8/nose_base-y0-yi45-p0-pi45-r0-ri20.lg_32-tree7-wmd.bin \
-	vendor/pittpatt/models/detection/multi_pose_face_landmark_detectors.8/left_eye-y0-yi45-p0-pi45-r0-ri20.lg_32-tree7-wmd.bin \
-	vendor/pittpatt/models/recognition/face.face.y0-y0-71-N-tree_7-wmd.bin \
 	vendor/lib/libfrsdk.so \
-	lib/libfacelock_jni.so \
+	vendor/lib/libfacenet.so \
 
 define facelock-copy-lib
 $(eval PRODUCT_COPY_FILES += $(FACELOCK_DIR)/$(1):$(TARGET_COPY_OUT_SYSTEM)/$(1):google)

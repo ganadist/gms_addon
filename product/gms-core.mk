@@ -15,6 +15,9 @@ PRODUCT_PACKAGES += \
 	GooglePartnerSetup \
 	SetupWizard \
 	GooglePackageInstaller \
+	GoogleExtServices \
+	GoogleExtShared \
+	GooglePrintRecommendationService \
 
 PRODUCT_PACKAGES += \
 	GoogleBackupTransport \
