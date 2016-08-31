@@ -6,11 +6,15 @@ apkdown() {
   python3 $(gettop)/vendor/google/build/tools/apkdown "$@"
 }
 
+apkinfo() {
+  python3 $(gettop)/vendor/google/build/tools/lib/apk.py "$@"
+}
+
 cleanodex() {
   rm -rf $OUT/system/framework $OUT/system/app $OUT/system/priv-app
+  rm -rf $OUT/obj/ETC/system_build_prop_intermediates
   find $OUT/ -name "*.jar" -exec rm -f {} \;
   find $OUT/ -name "*.apk" -exec rm -f {} \;
-  find $OUT/ -name "*.prop" -exec rm -f {} \;
 }
 
 generate_stub() {
