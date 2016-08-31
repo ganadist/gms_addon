@@ -1,3 +1,5 @@
+# vim: ts=4 sw=4 nocindent expandtab
+
 import os
 import subprocess
 

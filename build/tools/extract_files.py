@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# vim: ts=4 sw=4 nocindent expandtab
+
 import os, sys
 import errno
 import glob
