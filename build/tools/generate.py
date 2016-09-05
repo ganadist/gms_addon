@@ -18,7 +18,6 @@ STUBS_PREFIX = 'stubs'
 
 PACKAGES = (
     ('com.android.chrome', 'Chrome', ('Browser', 'Browser2'),),
-    ('com.android.facelock', 'FaceLock', ),
     ('com.google.android.GoogleCamera', 'GoogleCamera', 'Camera2'),
     ('com.google.android.apps.books', 'Books'),
     ('com.google.android.apps.cloudprint', 'CloudPrint'),
