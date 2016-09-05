@@ -1,7 +1,6 @@
 PRODUCT_PACKAGES := \
 	Books \
 	CloudPrint \
-	DeviceAssist \
 	Drive \
 	EditorsDocs \
 	EditorsSheets \
