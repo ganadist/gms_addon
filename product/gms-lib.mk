@@ -7,7 +7,6 @@ DRM_LIBS := \
 	vendor/lib/libdrmdecrypt.so \
 	vendor/lib/libwvdrm_L1.so \
 	vendor/lib/libwvm.so \
-	vendor/lib/mediadrm/libdrmclearkeyplugin.so \
 	vendor/lib/mediadrm/libwvdrmengine.so \
 
 define drm-copy-lib
