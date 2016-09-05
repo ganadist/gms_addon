@@ -1,2 +1,5 @@
 *.pyc
 *.apk
+data
+lib
+src/stubs/androguard
