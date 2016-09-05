@@ -6,7 +6,6 @@ PRODUCT_PACKAGES := \
 	CalendarGoogle \
 	DeskClockGoogle \
 	Gmail2 \
-	Exchange3Google \
 	LatinImeGoogle \
 	GoogleHome \
 	Music2 \
