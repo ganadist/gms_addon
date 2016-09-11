@@ -1,16 +1,17 @@
 PRODUCT_PACKAGES := \
 	Chrome \
-	GoogleCamera \
-	Photos \
 	CalculatorGoogle \
 	CalendarGoogle \
 	DeskClockGoogle \
 	Gmail2 \
-	LatinImeGoogle \
+	GoogleCamera \
 	GoogleHome \
-	Music2 \
-	Hangouts \
 	GoogleTTS \
+	Hangouts \
+	LatinImeGoogle \
+	Music2 \
+	NexusLauncher \
+	Photos \
 
 PRODUCT_PACKAGES += \
 	GoogleContacts \
@@ -21,8 +22,14 @@ PRODUCT_PACKAGES += \
 
 #	AndroidForWork \
 
-PRODUCT_PROPERTY_OVERRIDES += \
+PRODUCT_PROPERTY_OVERRIDES := \
+	ro.url.legal=http://www.google.com/intl/%s/mobile/android/basic/phone-legal.html \
+	ro.url.legal.android_privacy=http://www.google.com/intl/%s/mobile/android/basic/privacy.html \
+	ro.com.google.clientidbase=android-google \
+	ro.carrier=unknown \
+	ro.com.android.wifi-watchlist=GoogleGuest \
 	ro.error.receiver.system.apps=com.google.android.gms \
+	ro.setupwizard.enterprise_mode=1 \
 
 $(call inherit-product-if-exists, vendor/google/product/gms-jar.mk)
 $(call inherit-product-if-exists, vendor/google/product/gms-lib.mk)
