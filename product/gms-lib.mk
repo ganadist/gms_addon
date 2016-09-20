@@ -3,7 +3,6 @@ DRM_LIBDIR := vendor/google/lib/drm
 DRM_LIBS := \
 	vendor/lib/drm/libdrmwvmplugin.so \
 	vendor/lib/libWVStreamControlAPI_L1.so \
-	vendor/lib/libWVphoneAPI.so \
 	vendor/lib/libwvdrm_L1.so \
 	vendor/lib/libwvm.so \
 	vendor/lib/mediadrm/libwvdrmengine.so \
