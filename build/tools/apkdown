@@ -13,6 +13,11 @@ def down(url):
     return filename
 
 def apk_rename(filename):
+    if filename.startswith('com.google.android.GoogleCamera'):
+        # do not touch google camera
+        print('ignore google camera apk')
+        return
+
     attrs = get_apk_info(filename)
     newname = attrs['name']
 
