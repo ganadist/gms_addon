@@ -1,7 +1,7 @@
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
-# Chrome : 52.0.2743.98
+# Chrome : 53.0.2785.124
 LOCAL_MODULE := Chrome
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -23,20 +23,7 @@ LOCAL_MODULE_TARGET_ARCH := $(my_src_arch)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# FaceLock : 7.0-3037786
-LOCAL_MODULE := FaceLock
-LOCAL_MODULE_CLASS := APPS
-LOCAL_MODULE_TAGS := optional
-LOCAL_BUILT_MODULE_STEM := package.apk
-LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
-LOCAL_CERTIFICATE := PRESIGNED
-LOCAL_MODULE_OWNER := google
-LOCAL_DEX_PREOPT := false
-LOCAL_SRC_FILES := $(LOCAL_MODULE).apk
-include $(BUILD_PREBUILT)
-
-include $(CLEAR_VARS)
-# GoogleCamera : 2.7.008 (2130300-30)
+# GoogleCamera : 3.2.045 (2821762-30)
 LOCAL_MODULE := GoogleCamera
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -58,7 +45,7 @@ LOCAL_MODULE_TARGET_ARCH := $(my_src_arch)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Books : 3.9.49
+# Books : 3.10.21
 LOCAL_MODULE := Books
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -70,9 +57,8 @@ LOCAL_DEX_PREOPT := false
 LOCAL_SRC_FILES := $(LOCAL_MODULE).apk
 include $(BUILD_PREBUILT)
 
-
 include $(CLEAR_VARS)
-# CloudPrint : 1.33b
+# CloudPrint : 1.36b
 LOCAL_MODULE := CloudPrint
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -85,7 +71,7 @@ LOCAL_SRC_FILES := $(LOCAL_MODULE).apk
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Drive : 2.4.211.28.34
+# Drive : 2.4.351.24.35
 LOCAL_MODULE := Drive
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -94,7 +80,7 @@ LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
 LOCAL_CERTIFICATE := PRESIGNED
 LOCAL_MODULE_OWNER := google
 LOCAL_DEX_PREOPT := false
-LOCAL_DPI_VARIANTS := xhdpi
+LOCAL_DPI_VARIANTS := xhdpi xxhdpi
 my_archs := arm
 my_src_arch := $(call get-prebuilt-src-arch, $(my_archs))
 ifeq ($(my_src_arch),arm64)
@@ -117,7 +103,7 @@ LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
 LOCAL_CERTIFICATE := PRESIGNED
 LOCAL_MODULE_OWNER := google
 LOCAL_DEX_PREOPT := false
-LOCAL_DPI_VARIANTS := xhdpi
+LOCAL_DPI_VARIANTS := xhdpi xxhdpi
 my_archs := arm
 my_src_arch := $(call get-prebuilt-src-arch, $(my_archs))
 ifeq ($(my_src_arch),arm64)
@@ -131,7 +117,7 @@ LOCAL_MODULE_TARGET_ARCH := $(my_src_arch)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# EditorsSheets : 1.6.192.08.34
+# EditorsSheets : 1.6.352.11.34
 LOCAL_MODULE := EditorsSheets
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -140,7 +126,7 @@ LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
 LOCAL_CERTIFICATE := PRESIGNED
 LOCAL_MODULE_OWNER := google
 LOCAL_DEX_PREOPT := false
-LOCAL_DPI_VARIANTS := xhdpi
+LOCAL_DPI_VARIANTS := xhdpi xxhdpi
 my_archs := arm
 my_src_arch := $(call get-prebuilt-src-arch, $(my_archs))
 ifeq ($(my_src_arch),arm64)
@@ -154,7 +140,7 @@ LOCAL_MODULE_TARGET_ARCH := $(my_src_arch)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# EditorsSlides : 1.6.192.12.34
+# EditorsSlides : 1.6.352.16.30
 LOCAL_MODULE := EditorsSlides
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -163,7 +149,7 @@ LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
 LOCAL_CERTIFICATE := PRESIGNED
 LOCAL_MODULE_OWNER := google
 LOCAL_DEX_PREOPT := false
-LOCAL_DPI_VARIANTS := xhdpi
+LOCAL_DPI_VARIANTS := xhdpi xxhdpi
 my_archs := arm
 my_src_arch := $(call get-prebuilt-src-arch, $(my_archs))
 ifeq ($(my_src_arch),arm64)
@@ -177,7 +163,7 @@ LOCAL_MODULE_TARGET_ARCH := $(my_src_arch)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Fit : 1.58.09-106
+# Fit : 1.59.15-106
 LOCAL_MODULE := Fit
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -186,13 +172,13 @@ LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
 LOCAL_CERTIFICATE := PRESIGNED
 LOCAL_MODULE_OWNER := google
 LOCAL_DEX_PREOPT := false
-LOCAL_DPI_VARIANTS := xhdpi
+LOCAL_DPI_VARIANTS := xhdpi xxhdpi
 LOCAL_DPI_FILE_STEM := $(LOCAL_MODULE)_%.apk
 LOCAL_SRC_FILES := $(LOCAL_MODULE).apk
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# NewsWeather : 2.5.2 (105241914)
+# NewsWeather : 2.8.1 (133609341)
 LOCAL_MODULE := NewsWeather
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -201,7 +187,7 @@ LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
 LOCAL_CERTIFICATE := PRESIGNED
 LOCAL_MODULE_OWNER := google
 LOCAL_DEX_PREOPT := false
-LOCAL_DPI_VARIANTS := xhdpi
+LOCAL_DPI_VARIANTS := xhdpi xxhdpi
 LOCAL_DPI_FILE_STEM := $(LOCAL_MODULE)_%.apk
 LOCAL_SRC_FILES := $(LOCAL_MODULE).apk
 include $(BUILD_PREBUILT)
@@ -254,7 +240,7 @@ LOCAL_SRC_FILES := $(LOCAL_MODULE).apk
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Maps : 9.34.2
+# Maps : 9.37.2
 LOCAL_MODULE := Maps
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -277,7 +263,7 @@ LOCAL_MODULE_TARGET_ARCH := $(my_src_arch)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Messenger : 1.8.528 (2959790-36.phone)
+# Messenger : 1.9.036 (3206093-38.phone)
 LOCAL_MODULE := Messenger
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -287,7 +273,7 @@ LOCAL_OVERRIDES_PACKAGES := messaging
 LOCAL_CERTIFICATE := PRESIGNED
 LOCAL_MODULE_OWNER := google
 LOCAL_DEX_PREOPT := false
-LOCAL_DPI_VARIANTS := xhdpi
+LOCAL_DPI_VARIANTS := xhdpi xxhdpi
 my_archs := arm
 my_src_arch := $(call get-prebuilt-src-arch, $(my_archs))
 ifeq ($(my_src_arch),arm64)
@@ -322,7 +308,7 @@ LOCAL_MODULE_TARGET_ARCH := $(my_src_arch)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Photos : 1.26.0.130713109
+# Photos : 2.0.0.133319987
 LOCAL_MODULE := Photos
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -346,7 +332,7 @@ LOCAL_MODULE_TARGET_ARCH := $(my_src_arch)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# PlusOne : 8.5.0.130571184
+# PlusOne : 8.7.0.132506151
 LOCAL_MODULE := PlusOne
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -355,7 +341,7 @@ LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
 LOCAL_CERTIFICATE := PRESIGNED
 LOCAL_MODULE_OWNER := google
 LOCAL_DEX_PREOPT := false
-LOCAL_DPI_VARIANTS := xhdpi
+LOCAL_DPI_VARIANTS := xhdpi xxhdpi
 my_archs := arm
 my_src_arch := $(call get-prebuilt-src-arch, $(my_archs))
 ifeq ($(my_src_arch),arm64)
@@ -399,7 +385,7 @@ LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
 LOCAL_CERTIFICATE := PRESIGNED
 LOCAL_MODULE_OWNER := google
 LOCAL_DEX_PREOPT := false
-LOCAL_DPI_VARIANTS := xhdpi
+LOCAL_DPI_VARIANTS := xhdpi xxhdpi
 my_archs := arm
 my_src_arch := $(call get-prebuilt-src-arch, $(my_archs))
 ifeq ($(my_src_arch),arm64)
@@ -413,7 +399,7 @@ LOCAL_MODULE_TARGET_ARCH := $(my_src_arch)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# WallpaperPickerGoogle : wallpaper_20160713_RC00
+# WallpaperPickerGoogle : wallpaper_20160809_RC01
 LOCAL_MODULE := WallpaperPickerGoogle
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -440,7 +426,7 @@ LOCAL_SRC_FILES := $(LOCAL_MODULE).apk
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# CalendarGoogle : 5.5.15-129963483-release
+# CalendarGoogle : 5.5.7-124953442-future
 LOCAL_MODULE := CalendarGoogle
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -450,6 +436,8 @@ LOCAL_OVERRIDES_PACKAGES := Calendar
 LOCAL_CERTIFICATE := PRESIGNED
 LOCAL_MODULE_OWNER := google
 LOCAL_DEX_PREOPT := false
+LOCAL_DPI_VARIANTS := xhdpi xxhdpi
+LOCAL_DPI_FILE_STEM := $(LOCAL_MODULE)_%.apk
 LOCAL_SRC_FILES := $(LOCAL_MODULE).apk
 include $(BUILD_PREBUILT)
 
@@ -495,21 +483,20 @@ LOCAL_SRC_FILES := $(LOCAL_MODULE).apk
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Gmail2 : 6.7.128801648.release
+# Gmail2 : 6.8.132350049.release
 LOCAL_MODULE := Gmail2
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
 LOCAL_BUILT_MODULE_STEM := package.apk
 LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
-LOCAL_OVERRIDES_PACKAGES := Email
+LOCAL_OVERRIDES_PACKAGES := Email Exchange2
 LOCAL_CERTIFICATE := PRESIGNED
 LOCAL_MODULE_OWNER := google
 LOCAL_DEX_PREOPT := false
-LOCAL_DPI_VARIANTS := xhdpi
+LOCAL_DPI_VARIANTS := xhdpi xxhdpi
 LOCAL_DPI_FILE_STEM := $(LOCAL_MODULE)_%.apk
 LOCAL_SRC_FILES := $(LOCAL_MODULE).apk
 include $(BUILD_PREBUILT)
-
 
 include $(CLEAR_VARS)
 # KoreanIME : 1.5.0.125756861-preload-armeabi-v7a
@@ -555,7 +542,7 @@ LOCAL_MODULE_TARGET_ARCH := $(my_src_arch)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Keep : 3.3.222.0
+# Keep : 3.3.365.1
 LOCAL_MODULE := Keep
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -576,7 +563,7 @@ LOCAL_MODULE_TARGET_ARCH := $(my_src_arch)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# GoogleHome : 1.2.small
+# GoogleHome : 1.3.large
 LOCAL_MODULE := GoogleHome
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -590,7 +577,7 @@ LOCAL_SRC_FILES := $(LOCAL_MODULE).apk
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# talkback : 5.0.2
+# talkback : 5.0.4
 LOCAL_MODULE := talkback
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -603,7 +590,7 @@ LOCAL_SRC_FILES := $(LOCAL_MODULE).apk
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Music2 : 6.12.3216E.3118869
+# Music2 : 6.14.3420-0.G.3279860
 LOCAL_MODULE := Music2
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -617,7 +604,7 @@ LOCAL_SRC_FILES := $(LOCAL_MODULE).apk
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# PlayGames : 3.7.23 (2867637-036)
+# PlayGames : 3.7.24 (3051774-038)
 LOCAL_MODULE := PlayGames
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -626,7 +613,7 @@ LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
 LOCAL_CERTIFICATE := PRESIGNED
 LOCAL_MODULE_OWNER := google
 LOCAL_DEX_PREOPT := false
-LOCAL_DPI_VARIANTS := xhdpi
+LOCAL_DPI_VARIANTS := xhdpi xxhdpi
 my_archs := arm
 my_src_arch := $(call get-prebuilt-src-arch, $(my_archs))
 ifeq ($(my_src_arch),arm64)
@@ -756,7 +743,7 @@ LOCAL_MODULE_TARGET_ARCH := $(my_src_arch)
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# YouTube : 11.29.53
+# YouTube : 11.35.60
 LOCAL_MODULE := YouTube
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -765,7 +752,7 @@ LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
 LOCAL_CERTIFICATE := PRESIGNED
 LOCAL_MODULE_OWNER := google
 LOCAL_DEX_PREOPT := false
-LOCAL_DPI_VARIANTS := xhdpi
+LOCAL_DPI_VARIANTS := xhdpi xxhdpi
 my_archs := arm
 my_src_arch := $(call get-prebuilt-src-arch, $(my_archs))
 ifeq ($(my_src_arch),arm64)
@@ -851,20 +838,6 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_BUILT_MODULE_STEM := package.apk
 LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
 LOCAL_OVERRIDES_PACKAGES := DeskClock DeskClockGoogle
-LOCAL_CERTIFICATE := PRESIGNED
-LOCAL_MODULE_OWNER := google
-LOCAL_DEX_PREOPT := false
-LOCAL_SRC_FILES := $(LOCAL_MODULE).apk
-include $(BUILD_PREBUILT)
-
-include $(CLEAR_VARS)
-# DeviceAssistStub : 0.1 (stub)
-LOCAL_MODULE := DeviceAssistStub
-LOCAL_MODULE_CLASS := APPS
-LOCAL_MODULE_TAGS := optional
-LOCAL_BUILT_MODULE_STEM := package.apk
-LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
-LOCAL_OVERRIDES_PACKAGES := DeviceAssist
 LOCAL_CERTIFICATE := PRESIGNED
 LOCAL_MODULE_OWNER := google
 LOCAL_DEX_PREOPT := false
@@ -1153,7 +1126,7 @@ LOCAL_SRC_FILES := $(LOCAL_MODULE).apk
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# Phonesky : 6.7.15.E-all [0] 2987020
+# Phonesky : 7.0.16.H-all [0]
 LOCAL_MODULE := Phonesky
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -1195,7 +1168,7 @@ LOCAL_PRIVILEGED_MODULE := true
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# NexusLauncher : NMR1-3063178
+# NexusLauncher : 7.1-3231428
 LOCAL_MODULE := NexusLauncher
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -1239,7 +1212,7 @@ LOCAL_PRIVILEGED_MODULE := true
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# GoogleContacts : 1.4.17
+# GoogleContacts : 1.5.16
 LOCAL_MODULE := GoogleContacts
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -1298,7 +1271,7 @@ LOCAL_PRIVILEGED_MODULE := true
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# GmsCore : 9.4.52 (436-127739847)
+# GmsCore : 9.6.83 (436-133155058)
 LOCAL_MODULE := GmsCore
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -1308,7 +1281,7 @@ LOCAL_OVERRIDES_PACKAGES := WAPPushManager
 LOCAL_CERTIFICATE := PRESIGNED
 LOCAL_MODULE_OWNER := google
 LOCAL_DEX_PREOPT := false
-LOCAL_DPI_VARIANTS := xhdpi
+LOCAL_DPI_VARIANTS := xhdpi xxhdpi
 my_archs := arm
 my_src_arch := $(call get-prebuilt-src-arch, $(my_archs))
 ifeq ($(my_src_arch),arm64)
@@ -1405,7 +1378,7 @@ LOCAL_PRIVILEGED_MODULE := true
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# GooglePackageInstaller : 7.0-3067715
+# GooglePackageInstaller : 7.0-3267767
 LOCAL_MODULE := GooglePackageInstaller
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
@@ -1434,7 +1407,7 @@ LOCAL_PRIVILEGED_MODULE := true
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
-# SetupWizard : 224.3037786
+# SetupWizard : 224.3233482
 LOCAL_MODULE := SetupWizard
 LOCAL_MODULE_CLASS := APPS
 LOCAL_MODULE_TAGS := optional
