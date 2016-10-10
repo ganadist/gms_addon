@@ -39,6 +39,7 @@ PACKAGES = (
     ('com.google.android.apps.translate', 'Translate'),
     ('com.google.android.apps.walletnfcrel', 'Wallet',),
     ('com.google.android.apps.wallpaper', 'WallpaperPickerGoogle'),
+    ('com.google.android.apps.wallpaper.nexus', 'NexusWallpapers'),
     ('com.google.android.calculator', 'CalculatorGoogle',
         ('Calculator', 'ExactCalculator')),
     ('com.google.android.calendar', 'CalendarGoogle', 'Calendar'),
@@ -55,6 +56,7 @@ PACKAGES = (
         ('Home', 'Launcher2', 'Launcher3')),
     ('com.google.android.marvin.talkback', 'talkback'),
     ('com.google.android.music', 'Music2', 'Music',),
+    ('com.google.android.nexusicons', 'NexusLauncherIcons'),
     ('com.google.android.play.games', 'PlayGames',),
     ('com.google.android.printservice.recommendation',
                 'GooglePrintRecommendationService',
@@ -67,6 +69,8 @@ PACKAGES = (
         ('libwebviewchromium_loader', 'libwebviewchromium_plat_support'),),
     ('com.google.android.youtube', 'YouTube'),
     ('com.google.earth', 'GoogleEarth'),
+    ('com.breel.geswallpapers', 'WallpapersBReel'),
+    ('com.ustwo.lwp', 'WallpapersUsTwo'),
 )
 
 PRIVILEGED_PACKAGES = (
