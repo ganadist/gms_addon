@@ -74,6 +74,7 @@ PACKAGES = (
 )
 
 PRIVILEGED_PACKAGES = (
+    ('com.android.hotwordenrollment', 'HotwordEnrollment', ),
     ('com.android.vending', 'Phonesky', ),
     ('com.google.android.androidforwork', 'AndroidForWork', ),
     ('com.google.android.apps.gcs', 'GCS', ),
@@ -87,7 +88,9 @@ PRIVILEGED_PACKAGES = (
     ('com.google.android.ext.services', 'GoogleExtServices', 'ExtServices', ),
     ('com.google.android.feedback', 'GoogleFeedback', ),
     ('com.google.android.gms', 'GmsCore', 'WAPPushManager'),
-    ('com.google.android.googlequicksearchbox', 'Velvet', 'QuickSearchBox', ),
+    ('com.google.android.googlequicksearchbox', 'Velvet',
+        ('QuickSearchBox',),
+        ('HotwordEnrollment', )),
     ('com.google.android.gsf', 'GoogleServicesFramework', ),
     ('com.google.android.gsf.login', 'GoogleLoginService', ),
     ('com.google.android.nfcprovision', 'NfcProvision', ),

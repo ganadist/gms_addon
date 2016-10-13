@@ -5,8 +5,11 @@ import subprocess
 
 DPI = {'120': 'ldpi',
         '160': 'mdpi',
+        '213': 'hdpi', #'tvdpi',
         '240': 'hdpi',
         '320': 'xhdpi',
+        '400': 'xxhdpi',
+        '420': 'xxhdpi',
         '480': 'xxhdpi',
 #        '640': 'xxxhdpi',
 #        '213': 'tvdpi',
