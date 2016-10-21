@@ -180,7 +180,13 @@ class Module(object):
         return set(filter(lambda x: x != '', dpis))
 
     def print_android_mk_body(self):
-        self.attrs = dict(map(lambda x: (x, get_apk_info(x)), self.files))
+        self.attrs = collections.OrderedDict(map(lambda x: (x, get_apk_info(x)), self.files))
+        if self.name == 'GoogleCamera':
+            for filename, attrs in self.attrs.items():
+                if attrs['versionCode'] == '32045130':
+                    self.attrs = { filename: attrs }
+                    break
+
         yield '# %s : %s'%(self.name, list(self.attrs.values())[0]['versionName'])
 
 
