@@ -100,6 +100,7 @@ PRIVILEGED_PACKAGES = (
         'PackageInstaller', ),
     ('com.google.android.partnersetup', 'GooglePartnerSetup', ),
     ('com.google.android.setupwizard', 'SetupWizard', 'Provision', ),
+    ('com.google.android.storagemanager', 'StorageManagerGoogle', ),
     ('com.google.android.tag', 'TagGoogle', 'Tag', ),
 )
 

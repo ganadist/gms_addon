@@ -20,6 +20,7 @@ PRODUCT_PACKAGES += \
 	GoogleExtServices \
 	GoogleExtShared \
 	GooglePrintRecommendationService \
+	StorageManagerGoogle \
 
 PRODUCT_PACKAGES += \
 	GoogleBackupTransport \
