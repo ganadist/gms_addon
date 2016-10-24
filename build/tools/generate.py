@@ -38,7 +38,7 @@ PACKAGES = (
     ('com.google.android.apps.plus', 'PlusOne'),
     ('com.google.android.apps.translate', 'Translate'),
     ('com.google.android.apps.walletnfcrel', 'Wallet',),
-    ('com.google.android.apps.wallpaper', 'WallpaperPickerGoogle'),
+    ('com.google.android.apps.wallpaper', 'WallpaperPickerGoogle', 'WallpaperCropper',),
     ('com.google.android.apps.wallpaper.nexus', 'NexusWallpapers'),
     ('com.google.android.calculator', 'CalculatorGoogle',
         ('Calculator', 'ExactCalculator')),
@@ -80,7 +80,7 @@ PRIVILEGED_PACKAGES = (
     ('com.google.android.apps.gcs', 'GCS', ),
     ('com.google.android.apps.nexuslauncher', 'NexusLauncher',
         ('Home', 'Launcher2', 'Launcher3', 'GoogleHome'),
-        ('WallpaperPickerGoogle', )),
+        ('WallpaperPickerGoogle', 'NexusLauncherIcons', )),
     ('com.google.android.backuptransport', 'GoogleBackupTransport',),
     ('com.google.android.configupdater', 'ConfigUpdater', ),
     ('com.google.android.contacts', 'GoogleContacts', 'Contacts', ),
@@ -100,7 +100,7 @@ PRIVILEGED_PACKAGES = (
         'PackageInstaller', ),
     ('com.google.android.partnersetup', 'GooglePartnerSetup', ),
     ('com.google.android.setupwizard', 'SetupWizard', 'Provision', ),
-    ('com.google.android.storagemanager', 'StorageManagerGoogle', ),
+    ('com.google.android.storagemanager', 'StorageManagerGoogle', 'StorageManager', ),
     ('com.google.android.tag', 'TagGoogle', 'Tag', ),
 )
 
