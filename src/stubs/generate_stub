@@ -148,7 +148,7 @@ class GenerateStub:
     def getPkgName(self):
         return self.pkgname
 
-    def build(self):
+    def build(self, generate = True):
         a = self.apk
 
         apkname = apks[self.pkgname] + "Stub"
@@ -165,10 +165,12 @@ class GenerateStub:
         self.resources = {}
 
         androidmk = self.generateAndroidMk()
-        self.generateAndroidManifest()
-        self.generateBooleans()
-        self.generateStrings()
-        self.generateDrawables()
+
+        if generate:
+            self.generateAndroidManifest()
+            self.generateBooleans()
+            self.generateStrings()
+            self.generateDrawables()
 
         build_cmd = ("env",
             "ONE_SHOT_MAKEFILE=%s"%androidmk[len(TOP) + 1:],
@@ -353,9 +355,15 @@ class GenerateStub:
 
 
 if __name__ == '__main__':
-    for F in sys.argv[1:]:
+    force = True
+    if sys.argv[1] == '-f':
+        force = False
+        argv = sys.argv[2:]
+    else:
+        argv = sys.argv[1:]
+    for F in argv:
         stub = GenerateStub(F)
         if not stub.getPkgName() in apks:
             continue
-        stub.build()
+        stub.build(force)
 
