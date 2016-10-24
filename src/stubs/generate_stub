@@ -72,7 +72,7 @@ def create_alias(out, el, res):
 
     resources = []
 
-    for k in ("name", "icon", "label"):
+    for k in ("name", "icon", "roundIcon", "label"):
         keyname = "android:" + k
         resid, resname = copy_attribute(el, alias, keyname, res)
         if resname:
@@ -326,7 +326,7 @@ class GenerateStub:
         self.prepare_resources(
                 copy_attribute(manifest, outmanifest, "android:sharedUserId",
                     self.res))
-        for key in ("android:icon", "android:label"):
+        for key in ("android:icon", "android:roundIcon", "android:label"):
             self.prepare_resources(
                 copy_attribute(app, outapp, key, self.res))
 
