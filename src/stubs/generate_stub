@@ -97,16 +97,26 @@ def create_alias(out, el, res):
     return resources
 
 apks = {
-    "com.google.android.youtube": "Youtube",
     "com.google.android.apps.books": "Books",
-    "com.google.android.videos": "Videos",
+    "com.google.android.calendar": 'CalendarGoogle',
+    "com.google.android.apps.cloudprint": "CloudPrint",
     "com.google.android.apps.docs": "Drive",
-    "com.google.android.apps.cloudprint": "CloudPrint2",
+    'com.google.android.apps.docs.editors.docs': 'EditorsDocs',
+    'com.google.android.apps.docs.editors.sheets': 'EditorsSheets',
+    'com.google.android.apps.docs.editors.slides': 'EditorsSlides',
+    "com.google.android.apps.fitness": "Fit",
+    "com.google.android.talk": "Hangouts",
+    'com.google.android.keep': 'Keep',
+    "com.google.android.apps.maps": "Maps",
+    "com.google.android.music": "Music2",
+    "com.google.android.apps.magazines": 'Newsstand',
+    "com.google.android.apps.genie.geniewidget": 'NewsWeather',
+    'com.google.android.apps.photos': 'Photos',
+    "com.google.android.play.games": "PlayGames",
     "com.google.android.apps.plus": "PlusOne",
     "com.google.android.apps.translate": "Translate",
-    "com.google.android.apps.fitness": "PrebuiltFitness",
-    "com.google.android.apps.maps": "Maps",
-    "com.google.android.talk": "Hangouts",
+    "com.google.android.videos": "Videos",
+    "com.google.android.youtube": "YouTube",
 }
 
 disabled = (
