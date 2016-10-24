@@ -198,7 +198,7 @@ class GenerateStub:
 
         with TempDir() as tmpdir:
             script = ("7z d %(dstfile)s %(cert)s",
-                "7z x -o%(tmpdir)s %(srcfile)s %(cert)s",
+                "7z x -o%(tmpdir)s '%(srcfile)s' %(cert)s",
                     "(cd %(tmpdir)s && 7z a %(dstfile)s %(cert)s)",
                     "zipalign -f -p 4 %(dstfile)s %(dstfile)s.aligned",
                     "mv -f %(dstfile)s.aligned %(dstfile)s",
