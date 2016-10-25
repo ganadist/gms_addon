@@ -131,6 +131,17 @@ STUBS = (
     'YouTube',
 )
 
+NEED_ODEX = ()
+"""
+    #'GmsCore',
+    'GoogleLoginService',
+    'GoogleOneTimeInitializer',
+    'GooglePartnerSetup',
+    'GoogleServicesFramework',
+    'SetupWizard',
+)
+"""
+
 def parse_info(info):
     if len(info) == 2:
         pkg, name, = info
@@ -205,7 +216,10 @@ class Module(object):
 
         yield "LOCAL_CERTIFICATE := PRESIGNED"
         yield 'LOCAL_MODULE_OWNER := google'
-        yield 'LOCAL_DEX_PREOPT := false'
+        if self.name in NEED_ODEX:
+            yield 'LOCAL_DEX_PREOPT := true'
+        else:
+            yield 'LOCAL_DEX_PREOPT := false'
 
         abis = self.get_abis()
         dpis = self.get_dpis()
