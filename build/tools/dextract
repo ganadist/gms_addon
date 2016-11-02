@@ -1,0 +1,89 @@
+#!/usr/bin/env python3
+import glob
+import os, sys
+import shutil
+import subprocess
+import tempfile
+
+def check_requirement():
+    return True
+
+class WorkDir:
+    def __init__(self):
+        pass
+
+    def __enter__(self):
+        self.old_workdir = os.getcwd()
+        self.tempdir = tempfile.mkdtemp()
+        os.chdir(self.tempdir)
+        return self.tempdir
+
+    def __exit__(self, type, value, traceback):
+        os.chdir(self.old_workdir)
+        shutil.rmtree(self.tempdir)
+        return value
+
+def find_system_dir(path):
+    path = os.path.abspath(path)
+    while path:
+        fw = os.path.join(path, 'framework', 'framework.jar')
+        if os.path.exists(fw):
+            return path
+        path = os.path.dirname(path)
+    assert False, 'cannot find framework dir'
+
+def find_oat(apkfile):
+    oatdir = os.path.join(os.path.dirname(apkfile), 'oat')
+    basename = os.path.splitext(os.path.basename(apkfile))[0]
+    for filename in glob.glob(os.path.join(oatdir, '**', basename + '.odex')):
+        yield filename
+
+def extract_dex(oatfile, bootcp):
+    DEXFILE = 'classes.dex'
+    cmd = ('baksmali', 'x', oatfile, '-b', bootcp, '-o', 'app')
+    print(cmd)
+    assert os.system(' '.join(cmd)) == 0
+    cmd = ('smali', 'a', 'app', '-o', DEXFILE)
+    print(cmd)
+    assert os.system(' '.join(cmd)) == 0
+    return DEXFILE
+
+def restore_apk(apkfile, bootcp, out):
+    apkfile = os.path.abspath(apkfile)
+    with WorkDir() as workdir:
+        basename = os.path.basename(apkfile)
+        filename = os.path.join(workdir, basename)
+        for oat in find_oat(apkfile):
+            dexfile = extract_dex(oat, bootcp)
+            cmd = ('zip', '-D', '-X', '-O', filename, apkfile, dexfile)
+            assert os.system(' '.join(cmd)) == 0
+            shutil.move(filename, out)
+            break
+        else:
+            assert False, "cannot find oat file"
+
+def is_jar(filename):
+    return os.path.splitext(filename)[-1] in ('.apk', '.jar')
+
+if __name__ == '__main__':
+    if len(sys.argv) == 1:
+        print('usage: {} apkfiles or directries...'.format(sys.argv[0]))
+        sys.exit(1)
+
+    def parse_args(args):
+        for arg in args:
+            if os.path.isfile(arg) and is_jar(arg):
+                yield arg
+            elif os.path.isdir(arg):
+                for root, dirnames, filenames in os.walk(arg):
+                    if not 'oat' in dirnames: continue
+                    for f in filter(lambda x: is_jar(x), filenames):
+                        yield os.path.join(root, f)
+
+    sys_dir = find_system_dir(sys.argv[1])
+    # FIXME
+    oats = glob.glob(os.path.join(sys_dir, 'framework', 'arm', '*.oat'))
+    bootcp = ':'.join(oats)
+    for arg in parse_args(sys.argv[1:]):
+        restore_apk(arg, bootcp, os.getcwd())
+
