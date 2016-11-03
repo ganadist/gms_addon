@@ -7,6 +7,7 @@ PRODUCT_PACKAGES := \
 	GoogleCamera \
 	GoogleHome \
 	GoogleTTS \
+	GoogleVrCore \
 	Hangouts \
 	LatinImeGoogle \
 	Music2 \

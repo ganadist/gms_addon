@@ -1,6 +1,7 @@
 GMS_DATA_DIR := vendor/google/data
 
 GMS_DATA_FILES := \
+	etc/permissions/android.software.vr.mode.xml \
 	etc/permissions/com.google.android.camera2.xml \
 	etc/permissions/com.google.android.dialer.support.xml \
 	etc/permissions/com.google.android.maps.xml \
@@ -9,6 +10,7 @@ GMS_DATA_FILES := \
 	etc/preferred-apps/google.xml \
 	etc/sysconfig/google.xml \
 	etc/sysconfig/google_build.xml \
+	etc/sysconfig/google_vr_build.xml \
 	etc/updatecmds/google_generic_update.txt \
 
 define copy-gms-files

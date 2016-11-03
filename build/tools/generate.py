@@ -103,6 +103,7 @@ PRIVILEGED_PACKAGES = (
     ('com.google.android.setupwizard', 'SetupWizard', 'Provision', ),
     ('com.google.android.storagemanager', 'StorageManagerGoogle', 'StorageManager', ),
     ('com.google.android.tag', 'TagGoogle', 'Tag', ),
+    ('com.google.vr.vrcore', 'GoogleVrCore', ),
 )
 
 STUBS = (
