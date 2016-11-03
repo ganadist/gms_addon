@@ -5,6 +5,8 @@ import shutil
 import subprocess
 import tempfile
 
+ARCH = ('arm', 'arm64', 'x86', 'x86_64')
+
 def check_requirement():
     return True
 
@@ -33,10 +35,11 @@ def find_system_dir(path):
     assert False, 'cannot find framework dir'
 
 def find_oat(apkfile):
-    oatdir = os.path.join(os.path.dirname(apkfile), 'oat')
-    basename = os.path.splitext(os.path.basename(apkfile))[0]
-    for filename in glob.glob(os.path.join(oatdir, '**', basename + '.odex')):
-        yield filename
+    for arch in ARCH:
+        oatdir = os.path.join(os.path.dirname(apkfile), 'oat', arch)
+        basename = os.path.splitext(os.path.basename(apkfile))[0]
+        for filename in glob.glob(os.path.join(oatdir,  basename + '.odex')):
+            yield arch, filename
 
 def extract_dex(oatfile, bootcp):
     DEXFILE = 'classes.dex'
@@ -53,8 +56,8 @@ def restore_apk(apkfile, bootcp, out):
     with WorkDir() as workdir:
         basename = os.path.basename(apkfile)
         filename = os.path.join(workdir, basename)
-        for oat in find_oat(apkfile):
-            dexfile = extract_dex(oat, bootcp)
+        for arch, oat in find_oat(apkfile):
+            dexfile = extract_dex(oat, bootcp[arch])
             cmd = ('zip', '-D', '-X', '-O', filename, apkfile, dexfile)
             assert os.system(' '.join(cmd)) == 0
             shutil.move(filename, out)
@@ -82,8 +85,10 @@ if __name__ == '__main__':
 
     sys_dir = find_system_dir(sys.argv[1])
     # FIXME
-    oats = glob.glob(os.path.join(sys_dir, 'framework', 'arm', '*.oat'))
-    bootcp = ':'.join(oats)
+    bootcp = {}
+    for arch in ARCH:
+        oats = glob.glob(os.path.join(sys_dir, 'framework', arch, '*.oat'))
+        bootcp[arch] = ':'.join(oats)
     for arg in parse_args(sys.argv[1:]):
         restore_apk(arg, bootcp, os.getcwd())
 
