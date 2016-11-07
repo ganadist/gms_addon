@@ -32,7 +32,7 @@ def apk_rename(filename):
         print('rename %s => %s'%(filename, newname))
         if os.access(newname, os.F_OK):
             old_attrs = get_apk_info(newname)
-            if attrs[ver] < old_attrs[ver]:
+            if int(attrs[ver]) < int(old_attrs[ver]):
                 print ('old version({}) is newer than {}'.format(
                     old_attrs[ver], attrs[ver]))
                 return
