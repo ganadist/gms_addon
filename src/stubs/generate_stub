@@ -72,7 +72,7 @@ def create_alias(out, el, res):
 
     resources = []
 
-    for k in ("name", "icon", "roundIcon", "label"):
+    for k in ("name", "icon", "roundIcon", "label", "enabled"):
         keyname = "android:" + k
         resid, resname = copy_attribute(el, alias, keyname, res)
         if resname:
