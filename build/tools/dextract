@@ -4,26 +4,12 @@ import os, sys
 import shutil
 import subprocess
 import tempfile
+from lib import *
 
 ARCH = ('arm', 'arm64', 'x86', 'x86_64')
 
 def check_requirement():
     return True
-
-class WorkDir:
-    def __init__(self):
-        pass
-
-    def __enter__(self):
-        self.old_workdir = os.getcwd()
-        self.tempdir = tempfile.mkdtemp()
-        os.chdir(self.tempdir)
-        return self.tempdir
-
-    def __exit__(self, type, value, traceback):
-        os.chdir(self.old_workdir)
-        shutil.rmtree(self.tempdir)
-        return value
 
 def find_system_dir(path):
     path = os.path.abspath(path)
@@ -58,8 +44,9 @@ def restore_apk(apkfile, bootcp, out):
         filename = os.path.join(workdir, basename)
         for arch, oat in find_oat(apkfile):
             dexfile = extract_dex(oat, bootcp[arch])
-            cmd = ('zip', '-D', '-X', '-O', filename, apkfile, dexfile)
-            assert os.system(' '.join(cmd)) == 0
+            shutil.copy(apkfile, filename)
+            replace_entries(apkfile, filename, dexfile)
+            zipalign(filename)
             shutil.move(filename, out)
             break
         else:
